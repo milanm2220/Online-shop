@@ -2,7 +2,7 @@ package org.web.onlineshop.dto;
 
 import java.time.LocalDateTime;
 
-import org.web.onlineshop.model.OrderStatus;
+import org.web.onlineshop.util.OrderStatus;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package org.web.onlineshop.model;
+package org.web.onlineshop.util;
 
 public enum UserRole 
 {

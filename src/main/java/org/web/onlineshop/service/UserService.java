@@ -74,4 +74,9 @@ public class UserService
 	{
 		return (User) request.getSession().getAttribute("user");
 	}
+	
+	public void logout()
+	{
+		request.getSession().removeAttribute("user");
+	}
 }

@@ -49,4 +49,15 @@ public class UserController
 		}
 		catch(Exception exception) { throw exception; }
 	}
+	
+	@RequestMapping(value="/logout", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> logout()
+	{
+		try 
+		{
+			this.userService.logout();
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		catch(Exception exception) { throw exception; }
+	}
 }

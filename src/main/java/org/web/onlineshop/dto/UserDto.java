@@ -1,6 +1,6 @@
 package org.web.onlineshop.dto;
 
-import org.web.onlineshop.model.UserRole;
+import org.web.onlineshop.util.UserRole;
 
 import lombok.Data;
 

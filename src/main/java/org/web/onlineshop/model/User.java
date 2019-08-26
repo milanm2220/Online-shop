@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.validator.constraints.Length;
+import org.web.onlineshop.util.UserRole;
+
 import lombok.Data;
 
 @Data
@@ -23,9 +26,13 @@ public class User implements Serializable
     private Long id;
 
     @Column(nullable=false, unique=true)
+    @Length(min = 6)
+    @Length(max = 20)
     private String username;
 
     @Column(nullable=false)
+    @Length(min = 6)
+    @Length(max = 32)
     private String password;
 
     @Column(nullable=false)
@@ -41,7 +48,7 @@ public class User implements Serializable
     @Column
     private String phoneNumber;
 
-    @Column
+    @Column(nullable=false)
     private String email;
 
     @Column

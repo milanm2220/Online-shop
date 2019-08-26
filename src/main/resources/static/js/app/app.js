@@ -2,7 +2,7 @@
  * Instance of an AngularJS application.
  */
 
-var webShopApp = angular.module('webShopApp', ['ngRoute']);
+let webShopApp = angular.module('webShopApp', ['ngRoute']);
 
 webShopApp.config(function($routeProvider, $locationProvider) 
 {	
@@ -16,3 +16,6 @@ webShopApp.config(function($routeProvider, $locationProvider)
 		redirectTo: '/'
 	});	
 });
+
+const USERNAME_KEY = 'logged_in_user_username';
+const ROLE_KEY = 'logged_in_user_role';

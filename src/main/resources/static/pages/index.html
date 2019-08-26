@@ -20,33 +20,34 @@
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMenu">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
-	  <div class="collapse navbar-collapse" id="navbarMenu" data-ng-controller="navbarController">
+	  <div class="collapse navbar-collapse" id="navbarMenu" data-ng-controller="mainController">
 	    <ul class="navbar-nav mr-auto">
 	      <li class="nav-item" data-ng-class="{ active : isActive('/')}"><a class="nav-link" href="#/">Home <span class="sr-only">(current)</span></a></li>
-	      <li class="nav-item dropdown" data-ng-if="loggedInUser.role == 'ADMINISTRATOR'">
-	        <a class="nav-link dropdown-toggle" href="" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true"><span class="fa fa-cog"></span> Config</a>
-	        <div class="dropdown-menu dropdown-menu" aria-labelledby="navbarDropdown1">
-	          <a class="dropdown-item" href="#/show-users">Users</a>
-	          <div class="dropdown-divider"></div>
-	          <a class="dropdown-item" href="#/restaurants">Restaurants</a>
-	          <a class="dropdown-item" href="#/articles">Articles</a>
-	          <a class="dropdown-item" href="#/orders">Orders</a>
-	          <a class="dropdown-item" href="#/vehicles">Vehicles</a>
-	        </div>
-	      </li>
 	    </ul>
 	    <ul class="nav navbar-nav navbar-right">
-	      <li class="nav-item " data-ng-class="{ active : isActive('/sign-up')}" data-ng-if="!loggedIn"><a class="nav-link" href="#/sign-up"><span class="fa fa-user"></span> Sign Up</a></li>
-	      <li class="nav-item " data-ng-class="{ active : isActive('/log-in')}"  data-ng-if="!loggedIn"><a class="nav-link" href="#/log-in"><span class="fa fa-sign-in"></span> Login</a></li>
-    	  <li class="nav-item dropdown" data-ng-if="loggedIn">
-	        <a class="nav-link dropdown-toggle" href="" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true"><span data-ng-class="{'fa fa-user' : loggedInUser.role == 'CUSTOMER', 'fa fa-shield' : loggedInUser.role == 'ADMINISTRATOR', 'fa fa-car' : loggedInUser.role == 'DELIVERER'}"></span> {{loggedInUser.username}}</a>
+	      <li class="nav-item" data-toggle="modal" data-target="#registrationModal" data-ng-if="!loggedInUserInfo.username"><a class="nav-link" href=""><span class="fa fa-user"></span> Sign Up</a></li>
+	      <li class="nav-item" data-toggle="modal" data-target="#loginModal" data-ng-if="!loggedInUserInfo.username"><a class="nav-link" href=""><span class="fa fa-sign-in"></span> Login</a></li>
+    	  <li class="nav-item dropdown" data-ng-if="loggedInUserInfo.username">
+	        <a class="nav-link dropdown-toggle" href="" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true"><span data-ng-class="{'fa fa-user' : loggedInUserInfo.role == 'CUSTOMER', 'fa fa-shield' : loggedInUserInfo.role == 'ADMINISTRATOR', 'fa fa-car' : loggedInUserInfo.role == 'DELIVERER'}"></span> {{loggedInUserInfo.username}}</a>
 	        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown2">
 	          <a class="dropdown-item" href="#/my-acc">My account</a>
 	          <div class="dropdown-divider"></div>
-	          <a class="dropdown-item" href="" data-ng-click="logoutUser()">Logout</a>
+	          <span data-ng-controller="logoutController">
+	            <alerts></alerts>
+	          	<a class="dropdown-item" href="" data-ng-click="logout()" >Logout</a>
+          	  </span>
 	        </div>
 	      </li>  	
     	</ul>
+    	
+    	<div data-ng-controller="registrationController">
+	    	<alerts></alerts>
+	    	<registration-modal></registration-modal>
+    	</div>
+    	<div data-ng-controller="loginController">
+	    	<alerts></alerts>
+	    	<login-modal></login-modal>
+    	</div>
 	  </div>
 	</nav>
 
@@ -62,8 +63,14 @@
 	<script src="js/lib/jquery-3.4.1.js"></script>
 	<script src="js/lib/bootstrap.js"></script>
 	<script src="js/app/app.js"></script>
+	<script src="js/app/directives.js"></script>
 	<script src="js/app/controllers/topButtonController.js"></script>
-	<script src="js/app/controllers/navbarController.js"></script>
+	<script src="js/app/controllers/mainController.js"></script>
+	<script src="js/app/controllers/registrationController.js"></script>
+	<script src="js/app/controllers/loginController.js"></script>
+	<script src="js/app/controllers/logoutController.js"></script>
+	<script src="js/app/controllers/articleController.js"></script>
 	<script src="js/app/services/userService.js"></script>
+	<script src="js/app/services/articleService.js"></script>
 </body>
 </html>

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.web.onlineshop.exceptions.UserAlreadyExistsException;
 import org.web.onlineshop.model.Customer;
-import org.web.onlineshop.model.UserRole;
 import org.web.onlineshop.repository.CustomerRepository;
+import org.web.onlineshop.util.UserRole;
 
 @Service
 public class CustomerService 

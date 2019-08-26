@@ -4,7 +4,34 @@
 
 webShopApp.factory('usersFactory', function($http)
 {	
-	var factory = {};
+	let factory = {};
+	
+	factory.registerUser = function(user) 
+	{
+		return $http.post('/api/customers', user);
+	};
+	
+	factory.login = function(credentials) 
+	{
+		return $http.post('/api/users', credentials);
+	};
+	
+	factory.logout = function() 
+	{
+		return $http.post('/api/users/logout');
+	};
+	
+	factory.showPassword = function myFunction(input) 
+	{
+	    if (input.type === "password") 
+	    {
+	    	input.type = "text";
+	    }
+	    else
+	    {
+	    	input.type = "password";
+	    }
+	};
 	
 	return factory;
 });

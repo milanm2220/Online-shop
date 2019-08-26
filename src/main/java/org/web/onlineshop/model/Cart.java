@@ -16,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.web.onlineshop.util.OrderStatus;
+
 import lombok.Data;
 
 

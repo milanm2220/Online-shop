@@ -10,16 +10,18 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
+@EqualsAndHashCode
 public class Article 
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String name;
 	
 	@Column(nullable = false)
