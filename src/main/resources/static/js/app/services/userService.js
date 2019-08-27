@@ -11,6 +11,11 @@ webShopApp.factory('usersFactory', function($http)
 		return $http.post('/api/customers', user);
 	};
 	
+	factory.getLoggedInUser = function() 
+	{
+		return $http.get('/api/users');
+	};
+	
 	factory.login = function(credentials) 
 	{
 		return $http.post('/api/users', credentials);

@@ -1,0 +1,10 @@
+<div class="card-header">
+	<span class="badge badge-danger discount-badge ml-2" data-ng-if="article.discount && article.discount > 0">-{{article.discount}}%</span>	
+	<h2 class="card-title text-center">{{article.name}}</h2>
+</div>
+<div class="card-body">
+  	<p class="card-text">Description: {{article.description}}</p>		    
+	<p class="card-text">Price: ${{article.price}}</p>
+	<p class="card-text">Category: {{article.category.name}}</p>
+	<p class="card-text">Quantity: {{article.quantity}}</p>	    
+</div>

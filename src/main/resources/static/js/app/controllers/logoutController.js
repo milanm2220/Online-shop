@@ -10,6 +10,7 @@ webShopApp.controller('logoutController', function ($scope, $location, $timeout,
 		{
 			$window.localStorage.removeItem(USERNAME_KEY);
 			$window.localStorage.removeItem(ROLE_KEY);
+			$window.localStorage.removeItem(ID_KEY);
 		    $scope.loggedInUserInfo.username = undefined;
 		    $scope.loggedInUserInfo.role = undefined;
 		    

@@ -1,0 +1,62 @@
+<div class="container-fluid" data-ng-controller="profileController">
+	<div class="row">
+		<div class="col-3">
+			<div class="row d-flex justify-content-center mt-5">
+				<div class="card border-danger w-75">
+					<div class="card-header text-danger">
+						<h1 class="card-title text-center display-4">{{user.username}}</h1>
+					</div>
+					<div class="card-body text-danger">
+					  	<p class="card-text">First name: {{user.firstname}}</p>		    
+						<p class="card-text">Last name: {{user.lastname}}</p>
+						<p class="card-text">Email: {{user.email}}</p>
+						<p class="card-text">Phone number: {{(!user.phoneNumber) ? '/' : user.phoneNumber}}</p>
+						<p class="card-text">Address: {{(!user.address) ? '/' : user.address}}</p>
+						<p class="card-text" data-ng-if="user.role == 'CUSTOMER'"><b>Bonus points: {{(!user.bonusPoints || user.bonusPoints == 0) ? '/' : user.bonusPoints}}</b></p>	    
+						
+						<!-- Update and delete options for admins -->
+						<div class="row d-flex justify-content-end mr-2">
+							<a href=""  data-ng-click="editArticleOpenModal(article)" data-toggle="modal"  style="font-size: 120%;" data-target="#articleModal" data-ng-if="role == 'ADMINISTRATOR'"><span class="fa fa-pencil"></span></a>
+							<a href="" data-ng-click="deleteArticle(article)" data-toggle="tooltip"  style="font-size: 120%;" title="Remove article" class="ml-4" data-ng-if="role == 'ADMINISTRATOR'"><span class="fa fa-trash-o"></span></a>
+						</div>
+						 
+						<div class="row d-flex justify-content-end mr-2">
+							<button class="btn btn-primary ml-3" data-toggle="modal" data-ng-click="onCartModalOpening(article)" data-target="#cartModal" data-ng-if="role == 'CUSTOMER'"><span class="fa fa-cart-plus" style="font-size: 120%"></span> Add to cart</button>   
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-9">
+			<div data-ng-if="user.role == 'CUSTOMER'">
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+				  <li class="nav-item active w-50 text-center">
+				    <span class="nav-link active" style="cursor: pointer;" id="history-tab" data-toggle="tab" data-target="#history" role="tab" aria-controls="history" aria-selected="true">Previous purchases</span>
+				  </li>
+				  <li class="nav-item w-50 text-center">
+				    <span class="nav-link" style="cursor: pointer;" id="favourites-tab" data-toggle="tab" data-target="#favourites" role="tab" aria-controls="favourites" aria-selected="false">Favourite articles</span>
+				  </li>
+				</ul>
+				<div class="tab-content" id="myTabContent">
+				  <div class="tab-pane fade show active" id="history" role="tabpanel" aria-labelledby="history-tab">
+				  ...
+				  </div>
+				  <div class="tab-pane fade" id="favourites" role="tabpanel" aria-labelledby="favourites-tab">
+				  	<div class="row d-flex justify-content-center mt-3" data-ng-if="!articles || articles.length === 0">
+						<h1>You have no any favourite article.</h1>
+				  	</div>
+				  	<div class="row d-flex justify-content-left" data-ng-if="articles && articles.length > 0">
+						<div class="card my-2 mx-5 custom-card-shadow" style="width: 25%;" data-ng-repeat="article in articles">		  
+							<favourite-articles-repeater></favourite-articles-repeater>					  
+						</div>
+					</div>
+				  </div>
+				</div>
+			</div>
+			<div data-ng-if="user.role == 'ADMINISTRATOR'">
+			</div>
+			<div data-ng-if="user.role == 'DELIVERER'">
+			</div>
+		</div>
+	</div>
+</div>

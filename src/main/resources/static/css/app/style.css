@@ -76,6 +76,14 @@ button
 	float: right; 
 	border-radius: 50%;
 	font-size: 100%;
-	padding-top: 7%;
-	padding-bottom: 7%;
+	padding-top: 4%;
+	padding-bottom: 4%;
+}
+
+.cart
+{
+	margin-top: 100%;
+	min-height: 250px;
+    max-height: 500px;
+    overflow: auto;
 }

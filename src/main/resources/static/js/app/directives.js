@@ -27,9 +27,33 @@ webShopApp.directive('loginModal', function()
 });
 
 webShopApp.directive('articlesRepeater', function() 
-		{
-		    return {
-		        restrict: 'E',
-		        templateUrl: '../directives/articlesRepeater.html'
-		    };
-		});
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/articlesRepeater.html'
+    };
+});
+
+webShopApp.directive('cart', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/cart.html'
+    };
+});
+
+webShopApp.directive('cartModal', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/cartModal.html'
+    };
+});
+
+webShopApp.directive('favouriteArticlesRepeater', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/favouriteArticlesRepeater.html'
+    };
+});

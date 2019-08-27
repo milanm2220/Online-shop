@@ -1,19 +1,24 @@
+<div class="card-header">
+	<!-- Favourite/unfavourite option for customers -->
+  	<a href="" data-ng-click="favouriteArticle(article)" style="float:left; font-size: 120%;" data-ng-if="role == 'CUSTOMER'">
+  		<span data-ng-class="{'fa fa-star' : isInFavourites(article) != -1, 'fa fa-star-o' : isInFavourites(article) == -1}"></span>
+  	</a>
+	<span class="badge badge-danger discount-badge ml-2" data-ng-if="article.discount && article.discount > 0">-{{article.discount}}%</span>	
+	<h2 class="card-title text-center">{{article.name}}</h2>
+</div>
 <div class="card-body">
-	<div class="card-header mb-3">
-		<span class="badge badge-danger discount-badge ml-2" data-ng-if="article.discount && article.discount > 0">-{{article.discount}}%</span>
-	  	<h2 class="card-title text-center">{{article.name}}</h2>	
-	</div>
   	<p class="card-text">Description: {{article.description}}</p>		    
 	<p class="card-text">Price: ${{article.price}}</p>
 	<p class="card-text">Category: {{article.category.name}}</p>
 	<p class="card-text">Quantity: {{article.quantity}}</p>	    
 	
 	<!-- Update and delete options for admins -->
-	<a href=""  data-ng-click="editArticleOpenModal(article)" data-toggle="modal"  style="font-size: 120%;" data-target="#articleModal"><span class="fa fa-pencil"></span></a>
-	<a href="" data-ng-click="deleteArticle(article)" data-toggle="tooltip"  style="font-size: 120%;" title="Remove article" class="ml-2"><span class="fa fa-trash-o"></span></a>
+	<div class="row d-flex justify-content-end mr-2">
+		<a href=""  data-ng-click="editArticleOpenModal(article)" data-toggle="modal"  style="font-size: 120%;" data-target="#articleModal" data-ng-if="role == 'ADMINISTRATOR'"><span class="fa fa-pencil"></span></a>
+		<a href="" data-ng-click="deleteArticle(article)" data-toggle="tooltip"  style="font-size: 120%;" title="Remove article" class="ml-4" data-ng-if="role == 'ADMINISTRATOR'"><span class="fa fa-trash-o"></span></a>
+	</div>
 	 
-	<button class="btn btn-primary ml-3" data-toggle="modal" data-ng-click="onCartModalOpening(article)" data-target="#cartModal"><span class="fa fa-cart-plus" style="font-size: 120%"></span> Add to cart</button>   
+	<div class="row d-flex justify-content-end mr-2">
+		<button class="btn btn-primary ml-3" data-toggle="modal" data-ng-click="onCartModalOpening(article)" data-target="#cartModal" data-ng-if="role == 'CUSTOMER'"><span class="fa fa-cart-plus" style="font-size: 120%"></span> Add to cart</button>   
+	</div>
 </div>
-
-<!-- data-ng-if="loggedInUser.role == 'ADMINISTRATOR'" -->
-<!-- data-ng-if="canOrder && (loggedInUser.role == 'CUSTOMER' || loggedInUser.role == 'ADMINISTRATOR')" -->

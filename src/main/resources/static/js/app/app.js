@@ -11,11 +11,31 @@ webShopApp.config(function($routeProvider, $locationProvider)
 	{
 		templateUrl: 'pages/home.html'
 	})
+	$routeProvider.when('/profile',
+	{
+		templateUrl: 'pages/profile.html'
+	})
 	.otherwise(
 	{
 		redirectTo: '/'
 	});	
 });
 
+const ID_KEY = 'logged_in_user_id';
 const USERNAME_KEY = 'logged_in_user_username';
 const ROLE_KEY = 'logged_in_user_role';
+
+webShopApp.filter('range', function() 
+{
+    return function(input, start, end) 
+    {    
+  	    start = parseInt(start);
+	    end = parseInt(end);
+	    while (start != end) 
+	    {
+		    input.push(start);
+	        start += 1;
+	    }
+	    return input;
+    };
+});

@@ -10,6 +10,7 @@ webShopApp.controller('loginController', function ($scope, $location, $timeout, 
 	{					
 		usersFactory.login($scope.credentials).then(function(data)
 		{
+			$window.localStorage.setItem(ID_KEY, data.data.id);
 			$window.localStorage.setItem(USERNAME_KEY, data.data.username);
 			$window.localStorage.setItem(ROLE_KEY, data.data.role);
 		    $scope.loggedInUserInfo.username = data.data.username;

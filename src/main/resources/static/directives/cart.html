@@ -1,0 +1,32 @@
+<div data-ng-controller="orderController">
+	<div class="mr-3 border rounded p-3 bg-white cart" data-ng-if="role == 'CUSTOMER'">
+		<h4 class="mb-3 text-center text-primary"><span class="fa fa-shopping-cart mr-1"></span> Cart</h4>
+		<hr>
+		<h5 class="text-center text-primary mt-5" data-ng-if="!items || items.length == 0">Cart is still empty.</h5>
+		<div data-ng-if="items && items.length > 0">		
+			<div data-ng-repeat="item in items">
+			  <div>
+				  <p style="font-size: 90%;">{{item.amount}} x {{item.article.name}}</p>
+				  <div class="row">
+				  	<div class="col-9">
+				  		<p style="font-size: 90%;">Price: ${{item.article.price * item.amount | number : 2}}</p>
+				  	</div>
+				  	<div class="col-3">
+				  		<a class="text-primary" data-ng-click="dropItemFromCart($index)" style="cursor: pointer"><span class="fa fa-trash-o"></span></a>			      		  				  				  	
+				  	</div>
+				  </div>
+			  </div>
+			  <hr>
+			</div>
+			<p class="my-2 font-weight-bold">Total price: ${{totalPrice | number : 2}}</p>
+			<hr>		
+		    <div class="text-center">
+		    	<button class="btn btn-primary" data-ng-click="onOrderModalOpening()" data-toggle="modal" data-target="#orderModal">Order!</button>
+		    </div>
+		</div>
+	</div>
+	
+	<alerts></alerts>
+	
+	<cart-modal></cart-modal>
+</div>

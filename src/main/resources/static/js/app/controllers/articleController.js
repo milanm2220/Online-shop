@@ -2,8 +2,43 @@
  * Controller for retrieving articles
  */
 
-webShopApp.controller('articleController', function ($scope, $timeout, articlesFactory) 
+webShopApp.controller('articleController', function ($scope, $timeout, $window, articlesFactory, customersFactory) 
 {  
+	const displayFailureMessage = function(error)
+	{
+		$scope.failAlertMessage = error.data.message;
+		$scope.failAlertVisibility = true;
+		
+		$timeout(function ()
+		{
+			$scope.failAlertVisibility = false;
+		}, 3000);
+	}
+	
+	$scope.role = $window.localStorage.getItem(ROLE_KEY);	
+	
+	$scope.$watch(function()
+	{
+	  return $window.localStorage.getItem(ROLE_KEY);
+	},
+	function(newCodes, oldCodes)
+	{
+		$scope.role = $window.localStorage.getItem(ROLE_KEY);
+	});
+	
+	if ($scope.role == 'CUSTOMER')
+	{
+		customersFactory.getFavouriteArticles($window.localStorage.getItem(ID_KEY)).then(function(data)
+		{
+			$scope.favouriteArticles = data.data;
+		})
+		.catch(function(error) 
+		{
+			displayFailureMessage(error);
+		});
+	}
+	
+	
 	$scope.sortTypes = [
 		{
 			"value" : "name_asc",
@@ -29,19 +64,8 @@ webShopApp.controller('articleController', function ($scope, $timeout, articlesF
 	})
 	.catch(function(error) 
 	{
-		displayFailureMessage();
+		displayFailureMessage(error);
 	});
-	
-	const displayFailureMessage = function()
-	{
-		$scope.failAlertMessage = error.data.message;
-		$scope.failAlertVisibility = true;
-		
-		$timeout(function ()
-		{
-			$scope.failAlertVisibility = false;
-		}, 3000);
-	}
 	
 	const getUnsortedArticles = function()
 	{
@@ -51,7 +75,7 @@ webShopApp.controller('articleController', function ($scope, $timeout, articlesF
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage();
+			displayFailureMessage(error);
 		});
 	}
 	
@@ -67,7 +91,7 @@ webShopApp.controller('articleController', function ($scope, $timeout, articlesF
 			})
 			.catch(function(error) 
 			{
-				displayFailureMessage();
+				displayFailureMessage(error);
 			});
 		}
 		else
@@ -86,7 +110,7 @@ webShopApp.controller('articleController', function ($scope, $timeout, articlesF
 			})
 			.catch(function(error) 
 			{
-				displayFailureMessage();
+				displayFailureMessage(error);
 			});
 		}
 		else
@@ -103,7 +127,7 @@ webShopApp.controller('articleController', function ($scope, $timeout, articlesF
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage();
+			displayFailureMessage(error);
 		});
 	}
 	
@@ -117,12 +141,74 @@ webShopApp.controller('articleController', function ($scope, $timeout, articlesF
 			})
 			.catch(function(error) 
 			{
-				displayFailureMessage();
+				displayFailureMessage(error);
 			});
 		}
 		else
 		{
 			getUnsortedArticles();
 		}
+	}
+	
+	$scope.favouriteArticle = function(article)
+	{
+		let indexInFavourites = $scope.isInFavourites(article);
+		
+		if (indexInFavourites != -1)
+		{
+			customersFactory.removeArticleFromFavourites(article, $window.localStorage.getItem(ID_KEY)).then(function(data) 
+			{
+				$scope.favouriteArticles.splice(indexInFavourites, 1);
+				$scope.successAlertMessage = 'Article \'' + article.name + '\' is removed from favourites.';
+				$scope.successAlertVisibility = true;
+				
+				$timeout(function ()
+				{
+					$scope.successAlertVisibility = false;
+				}, 3000);
+			})
+			.catch(function(error) 
+			{
+				displayFailureMessage(error);
+			});
+		}
+		else
+		{
+			customersFactory.addArticleToFavourites(article, $window.localStorage.getItem(ID_KEY)).then(function(data) 
+			{
+				$scope.favouriteArticles.push(article);
+				$scope.successAlertMessage = 'Article \'' + article.name + '\' is added in favourites.';
+				$scope.successAlertVisibility = true;
+				
+				$timeout(function ()
+				{
+					$scope.successAlertVisibility = false;
+				}, 3000);
+			})
+			.catch(function(error) 
+			{
+				displayFailureMessage(error);
+			});
+		}
+	}
+	
+	$scope.isInFavourites = function(article)
+	{
+		for(x in $scope.favouriteArticles)
+		{
+			if ($scope.favouriteArticles[x].name == article.name)
+			{
+				return x;
+			}
+		}
+		
+		return -1;
+	}
+	
+	$scope.onCartModalOpening = function(article)
+	{
+		$scope.itemToPutInCart = {"article" : article, "amount" : 1};
+		$scope.article = article;
+		$scope.itemAmount = 1;
 	}
 });

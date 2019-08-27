@@ -1,0 +1,24 @@
+<!-- Modal for adding articles in the cart -->
+<div class="modal fade" id="cartModal" role="dialog">
+	<div class="modal-dialog modal-lg">
+	<!-- Modal content-->
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <h4 class="modal-title">{{article.name}}</h4>
+	      <button type="button" class="close" data-dismiss="modal">&times;</button>
+	    </div>
+	    <div class="modal-body">
+	    	<h5 class="mb-4">${{article.price}}</h5>
+        	<form name="articleForm" class="form-horizontal needs-validation" novalidate>
+				<div class="form-group row">
+					<label class="control-label col-sm-2" for="quantity">Amount:</label>
+					<div class="col-6">
+						<select class="form-control" id="quantity" data-ng-model="itemAmount" data-ng-options="n for n in [] | range:1:21"></select>
+					</div>
+		       		<button type="submit" class="btn btn-warning col-3" data-ng-click="putInCart()"><span class="fa fa-cart-arrow-down" style="color:white; font-size: 130%;"></span> Add</button>
+				</div>
+			</form>
+        </div>
+	  </div>
+	</div>
+</div>
