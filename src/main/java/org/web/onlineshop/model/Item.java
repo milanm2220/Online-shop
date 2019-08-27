@@ -9,9 +9,11 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
+@EqualsAndHashCode
 public class Item 
 {
 	@Id
@@ -24,4 +26,7 @@ public class Item
 	@Column(nullable = false)
 	@Min(0)
 	private Integer amount;
+	
+	@ManyToOne
+	private Cart cart;
 }

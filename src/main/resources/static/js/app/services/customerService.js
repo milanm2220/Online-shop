@@ -21,5 +21,20 @@ webShopApp.factory('customersFactory', function($http)
 		return $http.put('/api/customers/favourite_articles/remove/' + id, article);
 	}
 	
+	factory.getCart = function(id) 
+	{
+		return $http.get('/api/customers/cart/' + id);
+	};
+	
+	factory.addItemToCart = function(item, id)
+	{
+		return $http.put('/api/customers/cart/add/' + id, item);
+	}
+	
+	factory.dropItemFromCart = function(item, id)
+	{
+		return $http.put('/api/customers/cart/drop/' + id, item);
+	}
+	
 	return factory;
 });

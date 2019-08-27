@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -31,10 +32,10 @@ public class Cart implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Item> items = new HashSet<>();
 
-	@Column(nullable = false)
+	@Column
     private LocalDateTime timestamp;
     
     @ManyToOne

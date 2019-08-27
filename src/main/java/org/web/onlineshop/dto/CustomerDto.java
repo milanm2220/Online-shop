@@ -7,6 +7,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class CustomerDto extends UserDto
 {	    
-    private CartDto cart;
     private Integer bonusPoints;
 }
