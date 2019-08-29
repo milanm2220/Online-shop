@@ -11,5 +11,15 @@ webShopApp.factory('ordersFactory', function($http)
 		return $http.get('/api/carts/items/' + id);
 	};
 	
+	factory.getOrdersInOrderedState = function() 
+	{
+		return $http.get('/api/carts/ordered');
+	};
+	
+	factory.getOrdersInProgress = function() 
+	{
+		return $http.get('/api/carts/in_progress');
+	};
+	
 	return factory;
 });

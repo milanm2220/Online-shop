@@ -1,0 +1,26 @@
+<ul class="nav nav-tabs" id="customerTabs" role="tablist">
+  <li class="nav-item active w-50 text-center">
+    <span class="nav-link active" style="cursor: pointer;" id="history-tab" data-toggle="tab" data-target="#history" role="tab" aria-controls="history" aria-selected="true">Previous purchases</span>
+  </li>
+  <li class="nav-item w-50 text-center">
+    <span class="nav-link" style="cursor: pointer;" id="favourites-tab" data-toggle="tab" data-target="#favourites" role="tab" aria-controls="favourites" aria-selected="false">Favourite articles</span>
+  </li>
+</ul>
+<div class="tab-content" id="customerTabsContent">
+  <div class="tab-pane fade show active" id="history" role="tabpanel" aria-labelledby="history-tab">
+  	  <div class="row d-flex justify-content-center mt-3" data-ng-if="!orders || orders.length === 0">
+	  	  <h1>You have no any order yet.</h1>
+ 		  </div>
+	  <orders-repeater></orders-repeater>
+  </div>
+  <div class="tab-pane fade" id="favourites" role="tabpanel" aria-labelledby="favourites-tab">
+  	<div class="row d-flex justify-content-center mt-3" data-ng-if="!articles || articles.length === 0">
+		<h1>You have no any favourite article.</h1>
+  	</div>
+  	<div class="row d-flex justify-content-left" data-ng-if="articles && articles.length > 0">
+		<div class="card my-2 mx-5 custom-card-shadow" style="width: 25%;" data-ng-repeat="article in articles">		  
+			<favourite-articles-repeater></favourite-articles-repeater>					  
+		</div>
+	</div>
+  </div>
+</div>

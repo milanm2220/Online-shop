@@ -1,0 +1,83 @@
+<ul class="nav nav-tabs" id="delivererTabs" role="tablist">
+  <li class="nav-item active w-50 text-center">
+    <span class="nav-link active" style="cursor: pointer;" id="delivery-tab" data-toggle="tab" data-target="#delivery" role="tab" aria-controls="delivery" aria-selected="true">Available orders</span>
+  </li>
+  <li class="nav-item w-50 text-center">
+    <span class="nav-link" style="cursor: pointer;" id="history-deliverer-tab" data-toggle="tab" data-target="#historyDeliverer" role="tab" aria-controls="historyDeliverer" aria-selected="false">Orders history</span>
+  </li>
+</ul>
+<div class="tab-content" id="delivererTabsContent">
+  <div class="tab-pane fade show active" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
+  	<label class="h1 mt-5">Delivery in progress:</label>
+  	  <div class="row d-flex justify-content-center" data-ng-if="!deliveryInProgress">
+	  	  <h1>There are no delivery in progress yet.</h1>
+ 		  </div>
+	  <div class="table-responsive" data-ng-if="deliveryInProgress">
+		  <table class="table table-striped bg-white">
+		    <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Date and time</th>
+			      <th scope="col">Status</th>
+			      <th scope="col">Total price</th>
+			      <th scope="col">Action</th>
+			    </tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row">{{$index + 1}}</th>
+			        <td>{{deliveryInProgress.timestamp | date:'dd.MM.yyyy HH:mm:ss'}}</td>
+			        <td class="text-primary"><span class="fa fa-clock-o"></span> {{deliveryInProgress.state | enumFilter}}</td>
+			        <td>{{deliveryInProgress.totalPrice | number : 2}} RSD</td>
+			        <td>
+			        	<button data-ng-click="deliverOrder()" class="btn btn-primary mr-2"><span class="fa fa-car"></span> Deliver</button>
+			        	<button data-ng-click="cancelOrder()" class="btn btn-danger"><span class="fa fa-times"></span> Cancel</button>
+        			</td>
+			    </tr>
+			</tbody>
+		  </table>
+	  </div>
+ 		  <label class="h1 mt-5">Available orders:</label>
+  	  <div class="row d-flex justify-content-center" data-ng-if="!orderedOrders || orderedOrders.length === 0">
+	  	  <h1>There are no any available order to take over.</h1>
+ 		  </div>
+	  <div class="table-responsive" data-ng-if="orderedOrders && orderedOrders.length > 0">
+		  <table class="table table-striped bg-white">
+		    <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Date and time</th>
+			      <th scope="col">Status</th>
+			      <th scope="col">Total price</th>
+			      <th scope="col">Action</th>
+			    </tr>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="order in orderedOrders">
+					<th scope="row">{{$index + 1}}</th>
+			        <td>{{order.timestamp | date:'dd.MM.yyyy HH:mm:ss'}}</td>
+			        <td class="text-info"><span class="fa fa-question"></span> {{order.state | enumFilter}}</td>
+			        <td>{{order.totalPrice | number : 2}} RSD</td>
+			        <td>
+			        	<button data-ng-disabled="deliveryInProgress" 
+		        			data-ng-class="{'btn-danger' : deliveryInProgress}"
+		        			data-ng-click="onTakeOrderModalOpening(order)"
+		        			data-toggle="modal"
+		        			data-target="#takeOrderModal"
+		        			class="btn btn-primary">
+			        			Take over
+	        			</button>
+        			</td>
+			    </tr>
+			</tbody>
+		  </table>
+	  </div>
+  	</div>
+  <div class="tab-pane fade" id="historyDeliverer" role="tabpanel" aria-labelledby="history-deliverer-tab">
+  	<div class="row d-flex justify-content-center mt-3" data-ng-if="!orders || orders.length === 0">
+		<h1>You have no any order yet.</h1>
+  	</div>
+  	<orders-repeater></orders-repeater>
+  </div>
+</div>
+<take-order-modal></take-order-modal>

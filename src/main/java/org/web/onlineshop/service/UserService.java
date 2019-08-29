@@ -1,5 +1,8 @@
 package org.web.onlineshop.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.web.onlineshop.model.User;
 import org.web.onlineshop.repository.AdministratorRepository;
 import org.web.onlineshop.repository.CustomerRepository;
 import org.web.onlineshop.repository.DelivererRepository;
+import org.web.onlineshop.util.UserRole;
 
 @Service
 public class UserService 
@@ -61,7 +65,8 @@ public class UserService
 		
 		if (user != null)
 		{
-			request.getSession().setAttribute("user", user);			
+			request.getSession().setAttribute("id", user.getId());
+			request.getSession().setAttribute("role", user.getRole());
 		}
 		else
 		{
@@ -72,11 +77,40 @@ public class UserService
 	
 	public User getLoggedInUser()
 	{
-		return (User) request.getSession().getAttribute("user");
+		if (request.getSession() == null)
+		{
+			return null;
+		}
+		
+		long id = (long) request.getSession().getAttribute("id");
+		if (request.getSession().getAttribute("role") == UserRole.CUSTOMER)
+		{
+			return this.customerRepository.findById(id).get();
+		}
+		else if (request.getSession().getAttribute("role") == UserRole.DELIVERER)
+		{
+			return this.delivererRepository.findById(id).get();
+		}
+		else
+		{
+			return this.administratorRepository.findById(id).get();
+		}
 	}
 	
 	public void logout()
 	{
-		request.getSession().removeAttribute("user");
+		request.getSession().removeAttribute("id");
+		request.getSession().removeAttribute("role");
+	}
+	
+	public List<User> getNonAdminUsers()
+	{
+		List<Customer> customers = this.customerRepository.findAll();
+		List<Deliverer> deliverers = this.delivererRepository.findAll();
+		
+		List<User> users = new ArrayList<>(customers);
+		users.addAll(deliverers);
+		
+		return users;
 	}
 }

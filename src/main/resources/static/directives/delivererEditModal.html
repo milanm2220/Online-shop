@@ -1,0 +1,57 @@
+<!-- Modal for adding/updating deliverer -->
+<div class="modal fade" id="delivererEditModal" role="dialog">
+	<div class="modal-dialog modal-lg">
+	<!-- Modal content-->
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <h4 class="modal-title">Update deliverer '<i>{{deliverer.username}}</i>'</h4>
+	      <button type="button" class="close" data-dismiss="modal">&times;</button>
+	    </div>
+	    <div class="modal-body">
+        	<form name="delivererEditForm" class="form-horizontal needs-validation" novalidate>
+			  <div class="form-group row">
+			    <label class="control-label col-sm-3" for="firstnameEdit">First name:</label>
+			    <div class="col-sm-9">
+					<input type="text" class="form-control" name="firstnameEdit" id="firstnameEdit" data-ng-model="deliverer.firstname" placeholder="First name" required/>
+		  		</div>
+		  		<span class="offset-sm-3 col-sm-9" data-ng-show="(delivererForm.firstnameEdit.$dirty || submitted) && delivererForm.firstnameEditEdit.$error.required">Name is required.</span>
+		  	  </div>
+			  <div class="form-group row">
+			    <label class="control-label col-sm-3" for="lastnameEdit">Last name:</label>
+			    <div class="col-sm-9">
+					<input type="text" class="form-control" name="lastnameEdit" id="lastnameEdit" data-ng-model="deliverer.lastname" placeholder="Lastname" required/>
+			  	</div>
+			  	<span class="offset-sm-3 col-sm-9" data-ng-show="(delivererForm.lastnameEdit.$dirty || submitted) && delivererForm.lastnameEdit.$error.required">Lastname is required.</span>
+			  </div>
+			  <div class="form-group row">
+			    <label class="control-label col-sm-3" for="emailEdit">Email:</label>
+			    <div class="col-sm-9">
+		    		<input type="email" class="form-control" name="emailEdit" id="emailEdit" data-ng-model="deliverer.email" placeholder="Email" required>
+			  	</div>
+			  	<span class="offset-sm-3 col-sm-9" data-ng-show="(delivererForm.emailEdit.$dirty || submitted) && delivererForm.emailEdit.$error.required">Email is required.</span>
+		  	  	<span class="offset-sm-3 col-sm-9" data-ng-show="(delivererForm.emailEdit.$dirty || submitted) && delivererForm.emailEdit.$error.email">Invalid email.</span>
+		  	  </div>
+			  <div class="form-group row">
+			    <label class="control-label col-sm-3" for="phoneNumberEdit">Phone number:</label>
+			    <div class="col-sm-9">
+					<input type="text" class="form-control" name="phoneNumberEdit" id="phoneNumberEdit" data-ng-model="deliverer.phoneNumber" placeholder="Phone number"/>
+		  	  	</div>
+		  	  </div>
+		  	  <div class="form-group row">
+			    <label class="control-label col-sm-3" for="addressEdit">Address:</label>
+			    <div class="col-sm-9">
+		    		<input type="text" class="form-control" name="addressEdit" id="addressEdit" data-ng-model="deliverer.address" placeholder="Address">
+			  	</div>
+		  	  </div>
+		  	  <div class="form-group row">        
+		      	<div class="col-sm-12">
+	       			<button type="submit" class="btn btn-warning pull-right" data-ng-click="editDeliverer()">Confirm</button>
+		      	</div>
+		      </div>
+			</form>
+        </div>
+	  </div>
+	</div>
+	
+	<alerts></alerts>
+</div>

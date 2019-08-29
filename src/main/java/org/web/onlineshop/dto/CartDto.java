@@ -14,4 +14,5 @@ public class CartDto
     private CustomerDto customer;
     private UserDto deliverer;
     private OrderStatus state;
+    private Double totalPrice;
 }

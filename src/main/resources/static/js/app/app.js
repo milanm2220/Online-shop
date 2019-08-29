@@ -39,3 +39,15 @@ webShopApp.filter('range', function()
 	    return input;
     };
 });
+
+webShopApp.filter('enumFilter', function() 
+{
+	return function(x) 
+	{
+		if (!x)
+		{
+			return "";
+		}
+	    return (x.charAt(0).toUpperCase() + x.slice(1).toLowerCase()).replace(/_/g, ' ');
+	};
+});

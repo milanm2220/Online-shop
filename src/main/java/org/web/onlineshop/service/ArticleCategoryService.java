@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.web.onlineshop.exceptions.ArticleCategoryAlreadyExistsException;
 import org.web.onlineshop.exceptions.ArticleCategoryNotExistsException;
 import org.web.onlineshop.model.ArticleCategory;
 import org.web.onlineshop.repository.ArticleCategoryRepository;
@@ -26,6 +27,10 @@ public class ArticleCategoryService
 	
 	public ArticleCategory save(ArticleCategory articleCategory)
 	{
+		if (!this.articleCategoryRepository.findByName(articleCategory.getName()).isEmpty())
+		{
+			throw new ArticleCategoryAlreadyExistsException(articleCategory.getName());
+		}
 		return this.articleCategoryRepository.save(articleCategory);
 	}
 	

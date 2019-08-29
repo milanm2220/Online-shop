@@ -57,3 +57,83 @@ webShopApp.directive('favouriteArticlesRepeater', function()
         templateUrl: '../directives/favouriteArticlesRepeater.html'
     };
 });
+
+webShopApp.directive('orderModal', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/orderModal.html'
+    };
+});
+
+webShopApp.directive('ordersRepeater', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/ordersRepeater.html'
+    };
+});
+
+webShopApp.directive('takeOrderModal', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/takeOrderModal.html'
+    };
+});
+
+webShopApp.directive('articleModal', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/articleModal.html'
+    };
+});
+
+webShopApp.directive('profileAdministrator', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/profileAdministrator.html'
+    };
+});
+
+webShopApp.directive('profileCustomer', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/profileCustomer.html'
+    };
+});
+
+webShopApp.directive('profileDeliverer', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/profileDeliverer.html'
+    };
+});
+
+webShopApp.directive('articleCategoryModal', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/articleCategoryModal.html'
+    };
+});
+
+webShopApp.directive('delivererModal', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/delivererModal.html'
+    };
+});
+
+webShopApp.directive('delivererEditModal', function() 
+{
+    return {
+        restrict: 'E',
+        templateUrl: '../directives/delivererEditModal.html'
+    };
+});

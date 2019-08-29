@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.web.onlineshop.exceptions.ArticleAlreadyExistsException;
 import org.web.onlineshop.exceptions.ArticleNotExistsException;
 import org.web.onlineshop.model.Article;
 import org.web.onlineshop.model.ArticleCategory;
@@ -80,6 +81,10 @@ public class ArticleService
 	
 	public Article save(Article article)
 	{
+		if (!this.articleRepository.findByName(article.getName()).isEmpty())
+		{
+			throw new ArticleAlreadyExistsException(article.getName());
+		}
 		return this.articleRepository.save(article);
 	}
 	

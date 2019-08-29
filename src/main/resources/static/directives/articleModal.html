@@ -1,0 +1,75 @@
+<!-- Modal form for adding/updating article -->
+<div class="modal fade" id="articleModal" role="dialog">
+	<div class="modal-dialog modal-lg">
+	<!-- Modal content-->
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <h4 class="modal-title">{{title}}</h4>
+	      <button type="button" class="close" data-dismiss="modal">&times;</button>
+	    </div>
+	    <div class="modal-body">
+        	<form name="articleForm" class="form-horizontal needs-validation" novalidate>
+		    	<div class="form-group row">
+					<label class="control-label col-sm-2" for="name">Name:</label>
+				  	<div class="col-sm-6">
+				  		<input type="text" class="form-control" name="name" id="name" data-ng-model="newArticle.name" placeholder="Name" required/>
+					</div>
+					<span class="col-sm-4" style="color: red;" data-ng-show="(articleForm.name.$dirty || submitted) && articleForm.name.$error.required">Name is required.</span>
+				</div>
+				<div class="form-group row">
+					<label class="control-label col-sm-2" for="price">Price:</label>
+					<div class="col-sm-6">
+						<input type="number" class="form-control" name="price" id="price" data-ng-model="newArticle.price" data-ng-min="0" data-ng-step="0.01" data-ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" placeholder="9.99" required/>
+					</div>
+					<span class="col-sm-4" style="color: red;" data-ng-show="(articleForm.price.$dirty || submitted) && articleForm.price.$error.required">Price is required.</span>
+					<span class="col-sm-4" style="color: red;" data-ng-show="(articleForm.price.$dirty || submitted) && articleForm.price.$error.number">Not a number.</span>
+					<span class="col-sm-4" style="color: red;" data-ng-show="(articleForm.price.$dirty || submitted) && articleForm.price.$error.pattern">Not a valid number.</span>
+				</div>
+				<div class="form-group row">
+					<label class="control-label col-sm-2" for="quantityArticle">Quantity:</label>
+					<div class="col-sm-6">
+						<input type="number" class="form-control" name="quantity" id="quantityArticle" data-ng-min="0" data-ng-model="newArticle.quantity" data-ng-pattern="/^[0-9]{1,7}$/" placeholder="Quantity" required/>
+					</div>
+					<span class="col-sm-4" style="color: red;" data-ng-show="(articleForm.quantity.$dirty || submitted) && articleForm.quantity.$error.required">Quantity is required.</span>
+					<span class="col-sm-4" style="color: red;" data-ng-show="(articleForm.quantity.$dirty || submitted) && articleForm.quantity.$error.number">Not a number.</span>
+					<span class="col-sm-4" style="color: red;" data-ng-show="(articleForm.quantity.$dirty || submitted) && articleForm.quantity.$error.pattern">Not a valid number.</span>
+				</div>
+				<div class="form-group row">
+					<label class="control-label col-sm-2" for="articleCategory">Category:</label>
+					<div class="col-sm-6">
+						<select id="articleCategory"
+								class="form-control" 
+								name="category"
+								data-ng-change="newArticleCategoryChanged(newArticleCategory)"
+							 	data-ng-model="newArticleCategory"
+							 	data-ng-options="category.id as category.name for category in categories" required>
+							 	<option value="">--Select Category--</option>
+						</select>
+				 	</div>
+					<span class="col-sm-4" style="color: red;" data-ng-show="(articleForm.category.$dirty || submitted) && articleForm.category.$error.required">Category is required.</span>
+				</div>
+				<div class="form-group row">
+					<label class="control-label col-sm-2" for="discount">Discount:</label>
+					<div class="col-sm-6">
+						<input type="number" class="form-control" name="discount" id="discount" data-ng-min="0" data-ng-min="99" data-ng-model="newArticle.discount" data-ng-pattern="/^[0-9]{1,7}$/" placeholder="%"/>
+					</div>
+					<span class="col-sm-4" style="color: red;" data-ng-show="(articleForm.discount.$dirty || submitted) && articleForm.discount.$error.number">Not a number.</span>
+					<span class="col-sm-4" style="color: red;" data-ng-show="(articleForm.discount.$dirty || submitted) && articleForm.discount.$error.pattern">Not a valid number.</span>
+				</div>
+				<div class="form-group row">
+					<label class="control-label col-sm-2" for="description">Description:</label>
+				  	<div class="col-sm-6">
+				  		<textarea rows="4" cols="50" class="form-control" name="description" id="description" data-ng-model="newArticle.description" placeholder="Article's description..."></textarea>
+					</div>
+				</div>
+				<div class="form-group row">        
+			     	<div class="offset-sm-2 col-sm-10">
+		       			<button type="submit" class="btn btn-warning pull-right" data-ng-click="addArticle()" data-ng-if="adding == true">Add</button>
+		       			<button type="submit" class="btn btn-warning pull-right" data-ng-click="editArticle()" data-ng-if="adding == false">Confirm</button>
+		     		</div>
+			    </div>
+			</form>
+        </div>
+	  </div>
+	</div>
+</div>

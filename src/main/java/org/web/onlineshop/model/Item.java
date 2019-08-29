@@ -26,7 +26,4 @@ public class Item
 	@Column(nullable = false)
 	@Min(0)
 	private Integer amount;
-	
-	@ManyToOne
-	private Cart cart;
 }

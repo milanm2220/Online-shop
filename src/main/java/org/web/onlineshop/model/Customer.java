@@ -25,16 +25,19 @@ public class Customer extends User implements Serializable
 {
 	private static final long serialVersionUID = -797644671510990101L;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL)
+	@EqualsAndHashCode.Exclude
     private Cart cart;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
     private Set<Cart> previousPurchases = new HashSet<>();
     
     @ManyToMany
     @JoinTable(name = "favorite_articles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"))
+    @EqualsAndHashCode.Exclude
     private Set<Article> favoriteArticles = new HashSet<>();
     
     @Column

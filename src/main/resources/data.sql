@@ -1,8 +1,11 @@
 INSERT INTO "PUBLIC"."ADMINISTRATOR" VALUES 
 (1, 'Adminska adresa', 'admin@admin.com', 'Adminko', 'Adminic', 'admin123', '434343', 'ADMINISTRATOR', 'admin123');
 
+INSERT INTO "PUBLIC"."DELIVERER" VALUES 
+(1, 'Dostavljacka adresa', 'deliver@deliver.com', 'Dostavljac', 'Dostavljevic', 'deliver123', '999555', 'DELIVERER', 'deliver123');
+
 INSERT INTO "PUBLIC"."CUSTOMER" VALUES 
-(2, 'Neka adresa', 'pera@pera.com', 'Pera', 'Peric', 'pera123', '1312232', 'CUSTOMER', 'pera123', NULL, NULL);
+(1, 'Neka adresa', 'pera@pera.com', 'Pera', 'Peric', 'pera123', '1312232', 'CUSTOMER', 'pera123', NULL, NULL);
 
 INSERT INTO "PUBLIC"."ARTICLE_CATEGORY" VALUES 
 (1, 'food'), 

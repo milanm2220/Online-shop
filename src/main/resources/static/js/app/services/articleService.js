@@ -6,6 +6,21 @@ webShopApp.factory('articlesFactory', function($http)
 {	
 	let factory = {};
 	
+	factory.add = function(article) 
+	{
+		return $http.post('/api/articles', article);
+	};
+	
+	factory.update = function(article) 
+	{
+		return $http.put('/api/articles', article);
+	};
+	
+	factory.delete = function(id) 
+	{
+		return $http.delete('/api/articles/' + id);
+	};
+	
 	factory.getArticles = function() 
 	{
 		return $http.get('/api/articles');
@@ -76,11 +91,6 @@ webShopApp.factory('articlesFactory', function($http)
 		}
 		
 		return $http.get(path);
-	};
-	
-	factory.getArticleCategories = function() 
-	{
-		return $http.get('/api/article_categories');
 	};
 	
 	return factory;

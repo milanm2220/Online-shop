@@ -26,6 +26,16 @@ webShopApp.factory('usersFactory', function($http)
 		return $http.post('/api/users/logout');
 	};
 	
+	factory.getNonAdminUsers = function() 
+	{
+		return $http.get('/api/users/non_admin');
+	};
+	
+	factory.changeRole = function(roleChange) 
+	{
+		return $http.put('/api/users/non_admin', roleChange);
+	};
+	
 	factory.showPassword = function myFunction(input) 
 	{
 	    if (input.type === "password") 

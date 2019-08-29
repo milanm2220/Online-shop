@@ -47,4 +47,7 @@ public class Cart implements Serializable
     @Enumerated(EnumType.STRING)
     @Column
     private OrderStatus state;
+    
+    @Column
+    private Double totalPrice;
 }

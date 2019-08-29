@@ -1,0 +1,27 @@
+<div class="table-responsive mt-5" data-ng-if="orders && orders.length > 0">
+  <table class="table table-striped bg-white">
+    <thead>
+	    <tr>
+	      <th scope="col">#</th>
+	      <th scope="col">Date and time</th>
+	      <th scope="col">Status</th>
+	      <th scope="col">Total price</th>
+	    </tr>
+	</thead>
+	<tbody>
+		<tr data-ng-repeat="order in orders">
+			<th scope="row">{{$index + 1}}</th>
+	        <td>{{order.timestamp | date:'dd.MM.yyyy HH:mm:ss'}}</td>
+	        <td data-ng-class="{'text-info' : order.state == 'ORDERED',
+        				    'text-primary' : order.state == 'DELIVERY_IN_PROGRESS',
+        				    'text-danger' : order.state == 'CANCELED',
+        				    'text-success' : order.state == 'DELIVERED'}">
+        				    <span data-ng-class="{'fa fa-question' : order.state == 'ORDERED',
+					        				      'fa fa-clock-o' : order.state == 'DELIVERY_IN_PROGRESS',
+					        				      'fa fa-times' : order.state == 'CANCELED',
+					        				      'fa fa-check' : order.state == 'DELIVERED'}"></span> {{order.state | enumFilter}}</td>
+	        <td>{{order.totalPrice | number : 2}} RSD</td>
+	    </tr>
+	</tbody>
+  </table>
+</div>

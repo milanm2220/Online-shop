@@ -20,5 +20,6 @@ public class Deliverer extends User implements Serializable
 	private static final long serialVersionUID = 8682722971999008851L;
 	
 	@OneToMany(mappedBy = "deliverer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@EqualsAndHashCode.Exclude
     private Set<Cart> deliveries = new HashSet<>();
 }

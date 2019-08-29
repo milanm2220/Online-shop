@@ -1,0 +1,139 @@
+<ul class="nav nav-tabs" id="administratorTabs" role="tablist">
+  <li class="nav-item active w-25 text-center">
+    <span class="nav-link active" style="cursor: pointer;" id="users-tab" data-toggle="tab" data-target="#users" role="tab" aria-controls="users" aria-selected="true">Users</span>
+  </li>
+  <li class="nav-item w-25 text-center">
+    <span class="nav-link" style="cursor: pointer;" id="deliverers-tab" data-toggle="tab" data-target="#deliverers" role="tab" aria-controls="deliverers" aria-selected="false">Deliverers</span>
+  </li>
+  <li class="nav-item w-25 text-center">
+    <span class="nav-link" style="cursor: pointer;" id="categories-tab" data-toggle="tab" data-target="#categories" role="tab" aria-controls="categories" aria-selected="false">Article categories</span>
+  </li>
+  <li class="nav-item w-25 text-center">
+    <span class="nav-link" style="cursor: pointer;" id="reports-tab" data-toggle="tab" data-target="#reports" role="tab" aria-controls="reports" aria-selected="false">Favourite articles</span>
+  </li>
+</ul>
+<div class="tab-content" id="administratorTabsContent">
+  <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
+  	  <div class="row d-flex justify-content-center mt-3" data-ng-if="!users || users.length === 0">
+	  	  <h1>There are no any user yet.</h1>
+	  </div>
+	  <div class="table-responsive" data-ng-if="users && users.length > 0">
+		  <table class="table table-striped bg-white">
+		    <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Username</th>
+			      <th scope="col">Firstname</th>
+			      <th scope="col">Lastname</th>
+			      <th scope="col">Role</th>
+			      <th scope="col">Action</th>
+			    </tr>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="user in users">
+					<th scope="row">{{$index + 1}}</th>
+			        <td>{{user.username}}</td>
+			        <td>{{user.firstname}}</td>
+			        <td>{{user.lastname}}</td>
+			        <td>
+				        <select class="form-control"
+							 data-ng-model="user.role"
+							 data-ng-options="userRole.value as userRole.name for userRole in userRoles">
+						</select>
+					</td>
+			        <td>
+			        	<button data-ng-click="changeRole(user)" class="btn btn-primary" data-ng-disabled="user.originalRole == user.role">
+	        				<i class="fa fa-exchange"></i> Change role
+	        			</button>
+	       			</td>
+			    </tr>
+			</tbody>
+		  </table>
+      </div>
+  </div>
+  <div class="tab-pane fade" id="deliverers" role="tabpanel" aria-labelledby="deliverers-tab">
+  	  <button class="btn btn-primary my-3 pull-right" data-toggle="modal" data-target="#delivererModal"><span class="fa fa-plus" style="font-size: 120%"></span> Add deliverer</button>
+  	  <div class="row d-flex justify-content-center mt-3" data-ng-if="!deliverers || deliverers.length === 0">
+	  	  <h1>There are no any deliverer yet.</h1>
+	  </div>
+	  <div class="table-responsive" data-ng-if="deliverers && deliverers.length > 0">
+		  <table class="table table-striped bg-white">
+		    <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Username</th>
+			      <th scope="col">Firstname</th>
+			      <th scope="col">Lastname</th>
+			      <th scope="col">Email</th>
+			      <th scope="col">Role</th>
+			      <th scope="col">Phone number</th>
+			      <th scope="col">Address</th>
+			      <th scope="col">Action</th>
+			    </tr>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="deliverer in deliverers">
+					<th scope="row">{{$index + 1}}</th>
+			        <td>{{deliverer.username}}</td>
+			        <td>{{deliverer.firstname}}</td>
+			        <td>{{deliverer.lastname}}</td>
+			        <td>{{deliverer.email}}</td>
+			        <td>{{deliverer.role | enumFilter}}</td>
+			        <td>{{(deliverer.phoneNumber) ? deliverer.phoneNumber : '/'}}</td>
+			        <td>{{(deliverer.address) ? deliverer.address : '/'}}</td>
+			        <td>
+			        	<button data-ng-click="onEditDelivererModalOpening(deliverer)"
+		        			data-toggle="modal"
+		        			data-target="#delivererEditModal"
+		        			class="btn btn-primary">
+		        				<span class="fa fa-pencil"></span> Edit
+	        			</button>
+	        			<button data-ng-click="deleteDeliverer(deliverer)" class="btn btn-danger">
+		        				<span class="fa fa-trash-o"></span> Delete
+	        			</button>
+	       			</td>
+			    </tr>
+			</tbody>
+		  </table>
+      </div>
+  </div>
+  <div class="tab-pane fade" id="categories" role="tabpanel" aria-labelledby="categories-tab">
+  	<button class="btn btn-primary my-3 pull-right" data-ng-click="onAddArticleCategoryModalOpening()" data-toggle="modal" data-target="#articleCategoryModal"><span class="fa fa-plus" style="font-size: 120%"></span> Add category</button>
+  	<div class="row d-flex justify-content-center mt-3" data-ng-if="!categories || categories.length === 0">
+		<h1>There are no any article category yet.</h1>
+  	</div>
+	<div class="table-responsive" data-ng-if="categories && categories.length > 0">
+	  <table class="table table-striped bg-white">
+	    <thead>
+		    <tr>
+		      <th scope="col" style="width: 30%">#</th>
+		      <th scope="col" style="width: 40%">Name</th>
+		      <th scope="col" style="width: 30%">Action</th>
+		    </tr>
+		</thead>
+		<tbody>
+			<tr data-ng-repeat="category in categories">
+				<th scope="row">{{$index + 1}}</th>
+		        <td>{{category.name}}</td>
+		        <td>
+		        	<button data-ng-click="onEditArticleCategoryModalOpening(category)"
+	        			data-toggle="modal"
+	        			data-target="#articleCategoryModal"
+	        			class="btn btn-primary">
+	        				<span class="fa fa-pencil"></span> Edit
+        			</button>
+        			<button data-ng-click="deleteCategory(category)" class="btn btn-danger">
+	        				<span class="fa fa-trash-o"></span> Delete
+        			</button>
+       			</td>
+		    </tr>
+		</tbody>
+	  </table>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab">
+  	  <div class="row d-flex justify-content-center mt-3">
+	  	  <h1>****** REPORTS ARE UNDER CONSTRUCTION ******</h1>
+	  </div>
+  </div> 
+</div>

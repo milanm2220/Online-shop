@@ -29,4 +29,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long>
 	List<Article> findByPriceGreaterThanEqual(Double price);
 
 	List<Article> findByPriceLessThanEqual(Double price);
+	
+	List<Article> findByName(String name);
 }

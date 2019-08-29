@@ -8,19 +8,19 @@
 			  <div>
 				  <div class="row" style="font-size: 90%;">
 					  <div class="col-10">
-					  	<p>{{item.amount}} x {{item.article.name}} <i class="fa fa-long-arrow-right text-primary"></i> ${{item.article.price * item.amount | number : 2}}</p>
+					  	<p>{{item.amount}} x {{item.article.name}} <i class="fa fa-long-arrow-right text-primary"></i> {{item.discountPrice * item.amount | number : 2}} RSD</p>
 					  </div>
 					  <div class="col-2">
-					  	<a class="text-primary" data-ng-click="dropItemFromCart(item)" style="cursor: pointer"><span class="fa fa-trash-o"></span></a>
+					  	<a class="text-primary" data-ng-click="dropItemFromCart($index)" style="cursor: pointer"><span class="fa fa-trash-o"></span></a>
 					  </div>
 			  	  </div>
 			  </div>
 			</div>
 			<hr>
-			<p class="my-2 font-weight-bold">Total price: ${{totalPrice | number : 2}}</p>
+			<p class="my-2 font-weight-bold">Total price: {{totalPrice | number : 2}} RSD</p>
 			<hr>	
 		    <div class="text-center mb-3">
-		    	<button class="btn btn-primary" data-ng-click="onOrderModalOpening()" data-toggle="modal" data-target="#orderModal">Order!</button>
+		    	<button class="btn btn-primary" data-toggle="modal" data-target="#orderModal">Order!</button>
 		    </div>
 		</div>
 	</div>
@@ -28,4 +28,6 @@
 	<alerts></alerts>
 	
 	<cart-modal></cart-modal>
+	
+	<order-modal></order-modal>
 </div>

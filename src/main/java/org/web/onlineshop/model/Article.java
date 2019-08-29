@@ -26,7 +26,7 @@ public class Article
 	private String name;
 	
 	@EqualsAndHashCode.Exclude
-	@Column(nullable = false)
+	@Column
 	private String description;
 	
 	@EqualsAndHashCode.Exclude

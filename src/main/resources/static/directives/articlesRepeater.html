@@ -8,14 +8,14 @@
 </div>
 <div class="card-body">
   	<p class="card-text">Description: {{article.description}}</p>		    
-	<p class="card-text">Price: ${{article.price}}</p>
+	<p class="card-text">Price: {{article.price}} RSD</p>
 	<p class="card-text">Category: {{article.category.name}}</p>
 	<p class="card-text">Quantity: {{article.quantity}}</p>	    
 	
 	<!-- Update and delete options for admins -->
 	<div class="row d-flex justify-content-end mr-2">
-		<a href=""  data-ng-click="editArticleOpenModal(article)" data-toggle="modal"  style="font-size: 120%;" data-target="#articleModal" data-ng-if="role == 'ADMINISTRATOR'"><span class="fa fa-pencil"></span></a>
-		<a href="" data-ng-click="deleteArticle(article)" data-toggle="tooltip"  style="font-size: 120%;" title="Remove article" class="ml-4" data-ng-if="role == 'ADMINISTRATOR'"><span class="fa fa-trash-o"></span></a>
+		<a href=""  data-ng-click="editArticleOpenModal($index, article)" data-toggle="modal"  style="font-size: 120%;" data-target="#articleModal" data-ng-if="role == 'ADMINISTRATOR'"><span class="fa fa-pencil"></span></a>
+		<a href="" data-ng-click="deleteArticle($index, article)" data-toggle="tooltip"  style="font-size: 120%;" title="Remove article" class="ml-4" data-ng-if="role == 'ADMINISTRATOR'"><span class="fa fa-trash-o"></span></a>
 	</div>
 	 
 	<div class="row d-flex justify-content-end mr-2">

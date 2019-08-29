@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +34,43 @@ public class ArticleController
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArticleDto> add(@RequestBody ArticleDto articleDto)
+	{
+		try
+		{
+			Article article = this.modelMapper.map(articleDto, Article.class);
+			article = this.articleService.save(article);
+			articleDto = this.modelMapper.map(article, ArticleDto.class);
+			return new ResponseEntity<>(articleDto, HttpStatus.OK);
+		}
+		catch(Exception exception) { throw exception; }
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArticleDto> update(@RequestBody ArticleDto articleDto)
+	{
+		try
+		{
+			Article article = this.modelMapper.map(articleDto, Article.class);
+			article = this.articleService.update(article);
+			articleDto = this.modelMapper.map(article, ArticleDto.class);
+			return new ResponseEntity<>(articleDto, HttpStatus.OK);
+		}
+		catch(Exception exception) { throw exception; }
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> delete(@PathVariable Long id)
+	{
+		try
+		{
+			this.articleService.delete(id);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		catch(Exception exception) { throw exception; }
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ArticleDto>> getArticles()

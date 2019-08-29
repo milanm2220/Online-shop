@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.web.onlineshop.exceptions.CustomerNotExistsException;
+import org.web.onlineshop.exceptions.UserNotExistsException;
 import org.web.onlineshop.exceptions.UserAlreadyExistsException;
 import org.web.onlineshop.model.Customer;
 import org.web.onlineshop.repository.CustomerRepository;
@@ -39,11 +39,17 @@ public class CustomerService
 		return this.customerRepository.save(customer);
 	}
 	
+	public Customer saveWithoutCheck(Customer customer)
+	{
+		customer.setRole(UserRole.CUSTOMER);
+		return this.customerRepository.save(customer);
+	}
+	
 	public Customer update(Customer customer)
 	{
 		if (!this.userService.exists(customer))
 		{
-			throw new CustomerNotExistsException(customer.getId());
+			throw new UserNotExistsException(customer.getId(), UserRole.CUSTOMER);
 		}
 		return this.customerRepository.save(customer);
 	}
