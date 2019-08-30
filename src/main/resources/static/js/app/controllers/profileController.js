@@ -15,6 +15,8 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		}, 3000);
 	}
 	
+	$scope.displayFailureMessage = displayFailureMessage;
+	
 	const getAdministratorData = function(id)
 	{
 		articleCategoriesFactory.getArticleCategories().then(function(data)

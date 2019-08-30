@@ -21,5 +21,20 @@ webShopApp.factory('ordersFactory', function($http)
 		return $http.get('/api/carts/in_progress');
 	};
 	
+	factory.getDeliveredOrdersInPeriod = function(startDate, endDate) 
+	{
+		return $http.get('/api/carts/delivered?startDate=' + startDate + "&endDate=" + endDate);
+	};	
+	
+	factory.getNumberOfCanceledOrdersInPeriod = function(startDate, endDate) 
+	{
+		return $http.get('/api/carts/canceled?startDate=' + startDate + "&endDate=" + endDate);
+	};
+	
+	factory.getIncomeInPeriod = function(startDate, endDate) 
+	{
+		return $http.get('/api/carts/income?startDate=' + startDate + "&endDate=" + endDate);
+	};
+	
 	return factory;
 });

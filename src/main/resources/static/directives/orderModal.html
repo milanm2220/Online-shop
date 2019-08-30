@@ -42,7 +42,7 @@
 	    		</div>
 	    	</div>
 			<div class="form-group">
-			 	<p data-ng-if="!!bonusPoints || bonusPoints == 0">You have no any bonus point yet <i class="fa fa-frown-o ml-2" style="font-size: 150%;"></i></p>
+			 	<p data-ng-if="!bonusPoints || bonusPoints == 0">You have no any bonus point yet <i class="fa fa-frown-o ml-2" style="font-size: 150%;"></i></p>
 				<label class="control-label" for="points" data-ng-if="bonusPoints > 0">Use bonus points:</label>
 			 	<select class="form-control" 
 			 			id="points"

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import org.web.onlineshop.dto.ArticleDto;
 import org.web.onlineshop.dto.CartDto;
 import org.web.onlineshop.dto.CustomerDto;
 import org.web.onlineshop.dto.ItemDto;
+import org.web.onlineshop.exceptions.UnauthorizedAccessException;
 import org.web.onlineshop.exceptions.UserNotExistsException;
 import org.web.onlineshop.model.Article;
 import org.web.onlineshop.model.Cart;
@@ -43,30 +46,8 @@ public class CustomerController
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CustomerDto> getCustomer(@PathVariable Long id)
-	{
-		try
-		{
-			Customer customer = this.customerService.findById(id);
-			CustomerDto customerDto = this.modelMapper.map(customer, CustomerDto.class);
-			return new ResponseEntity<>(customerDto, HttpStatus.OK);
-		}
-		catch(Exception e) { throw new UserNotExistsException(id, UserRole.CUSTOMER); }
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<CustomerDto>> getCustomers()
-	{
-		List<Customer> customers = this.customerService.findAll();
-		List<CustomerDto> customerDtos = new ArrayList<>();
-		customers.stream().forEach(customer -> 
-		{
-			customerDtos.add(this.modelMapper.map(customer, CustomerDto.class));
-		});
-		
-		return new ResponseEntity<>(customerDtos, HttpStatus.OK);
-	}
+	@Autowired
+	private HttpServletRequest request;
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CustomerDto> registerCustomer(@RequestBody CustomerDto customerDto)
@@ -84,6 +65,11 @@ public class CustomerController
 	@RequestMapping(value = "/favourite_articles/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ArticleDto>> getFavouriteArticles(@PathVariable Long id)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.CUSTOMER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Customer customer = this.customerService.findById(id);
@@ -101,6 +87,11 @@ public class CustomerController
 	@RequestMapping(value = "/favourite_articles/add/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> addFavouriteArticle(@PathVariable Long id, @RequestBody ArticleDto articleDto)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.CUSTOMER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Customer customer = this.customerService.findById(id);
@@ -115,6 +106,11 @@ public class CustomerController
 	@RequestMapping(value = "/favourite_articles/remove/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> removeArticleFromFavourites(@PathVariable Long id, @RequestBody ArticleDto articleDto)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.CUSTOMER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Customer customer = this.customerService.findById(id);
@@ -129,6 +125,11 @@ public class CustomerController
 	@RequestMapping(value = "/cart/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CartDto> getCart(@PathVariable Long id)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.CUSTOMER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Customer customer = this.customerService.findById(id);
@@ -146,6 +147,11 @@ public class CustomerController
 	@RequestMapping(value = "/cart/add/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ItemDto> addItemToCart(@PathVariable Long id, @RequestBody ItemDto itemDto)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.CUSTOMER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Customer customer = this.customerService.findById(id);
@@ -176,6 +182,11 @@ public class CustomerController
 	@RequestMapping(value = "/cart/drop/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> dropItemFromCart(@PathVariable Long id, @RequestBody ItemDto itemDto)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.CUSTOMER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Customer customer = this.customerService.findById(id);
@@ -200,6 +211,11 @@ public class CustomerController
 	@RequestMapping(value = "cart/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> order(@PathVariable Long id, @RequestParam(required = false, value = "bonusPoints") Integer bonusPoints)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.CUSTOMER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{	
 			Customer customer = this.customerService.findById(id);
@@ -248,6 +264,11 @@ public class CustomerController
 	@RequestMapping(value = "/cart/all/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<CartDto>> getOrders(@PathVariable Long id)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.CUSTOMER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Customer customer = this.customerService.findById(id);
@@ -268,6 +289,11 @@ public class CustomerController
 	@RequestMapping(value = "/bonusPoints/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> getBonusPoints(@PathVariable Long id)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.CUSTOMER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Customer customer = this.customerService.findById(id);

@@ -21,23 +21,28 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 	{
 	  return $window.localStorage.getItem(ROLE_KEY);
 	},
-	function(newCodes, oldCodes)
+	function(newValue, oldValue)
 	{
 		$scope.role = $window.localStorage.getItem(ROLE_KEY);
+		getFavouriteArticles();
 	});
 	
-	if ($scope.role == 'CUSTOMER')
+	const getFavouriteArticles = function()
 	{
-		customersFactory.getFavouriteArticles($window.localStorage.getItem(ID_KEY)).then(function(data)
+		if ($scope.role == 'CUSTOMER')
 		{
-			$scope.favouriteArticles = data.data;
-		})
-		.catch(function(error) 
-		{
-			displayFailureMessage(error);
-		});
+			customersFactory.getFavouriteArticles($window.localStorage.getItem(ID_KEY)).then(function(data)
+			{
+				$scope.favouriteArticles = data.data;
+			})
+			.catch(function(error) 
+			{
+				displayFailureMessage(error);
+			});
+		}
 	}
 	
+	getFavouriteArticles();
 	
 	$scope.sortTypes = [
 		{

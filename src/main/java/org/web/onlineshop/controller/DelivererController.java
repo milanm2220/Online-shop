@@ -3,6 +3,8 @@ package org.web.onlineshop.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.web.onlineshop.dto.CartDto;
 import org.web.onlineshop.dto.UserDto;
 import org.web.onlineshop.exceptions.DelivererHasDeliveryInProgressException;
+import org.web.onlineshop.exceptions.UnauthorizedAccessException;
 import org.web.onlineshop.model.Cart;
 import org.web.onlineshop.model.Customer;
 import org.web.onlineshop.model.Deliverer;
@@ -24,6 +27,7 @@ import org.web.onlineshop.service.CustomerService;
 import org.web.onlineshop.service.DelivererService;
 import org.web.onlineshop.util.Constants;
 import org.web.onlineshop.util.OrderStatus;
+import org.web.onlineshop.util.UserRole;
 
 @RestController
 @RequestMapping(value = Constants.REST_API_PREFIX + "/deliverers")
@@ -41,6 +45,9 @@ public class DelivererController
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@Autowired
+	private HttpServletRequest request;
+	
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UserDto>> getDeliverers()
 	{
@@ -56,6 +63,11 @@ public class DelivererController
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserDto> add(@RequestBody UserDto delivererDto)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.ADMINISTRATOR)
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Deliverer deliverer = this.modelMapper.map(delivererDto, Deliverer.class);
@@ -69,6 +81,11 @@ public class DelivererController
 	@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserDto> update(@RequestBody UserDto delivererDto)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.ADMINISTRATOR)
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Deliverer deliverer = this.modelMapper.map(delivererDto, Deliverer.class);
@@ -82,6 +99,11 @@ public class DelivererController
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> delete(@PathVariable Long id)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.ADMINISTRATOR)
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Deliverer deliverer = this.delivererService.findById(id);
@@ -102,6 +124,11 @@ public class DelivererController
 	@RequestMapping(value = "/cart/take_over/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> takeOverOrder(@PathVariable Long id, @RequestBody CartDto cartDto)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.DELIVERER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{			
 			Deliverer deliverer = this.delivererService.findById(id);
@@ -123,6 +150,11 @@ public class DelivererController
 	@RequestMapping(value = "/cart/deliver/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> deliverOrder(@PathVariable Long id, @RequestBody CartDto cartDto)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.DELIVERER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{			
 			Cart cart = this.modelMapper.map(cartDto, Cart.class);
@@ -161,6 +193,11 @@ public class DelivererController
 	@RequestMapping(value = "/cart/cancel/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> cancelOrder(@PathVariable Long id, @RequestBody CartDto cartDto)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.DELIVERER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{			
 			Cart cart = this.modelMapper.map(cartDto, Cart.class);
@@ -185,6 +222,11 @@ public class DelivererController
 	@RequestMapping(value = "/cart/all/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<CartDto>> getOrders(@PathVariable Long id)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.DELIVERER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Deliverer deliverer = this.delivererService.findById(id);
@@ -205,6 +247,11 @@ public class DelivererController
 	@RequestMapping(value = "/cart/in_progress/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CartDto> getOrderInProgress(@PathVariable Long id)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.DELIVERER || !request.getSession().getAttribute("id").equals(id))
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		try
 		{
 			Deliverer deliverer = this.delivererService.findById(id);

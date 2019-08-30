@@ -59,6 +59,7 @@ public class CartService
 		{
 			try
 			{
+				item.setCart(cart);
 				item = this.saveItem(item);
 				cart.getItems().add(item);
 				this.update(cart);

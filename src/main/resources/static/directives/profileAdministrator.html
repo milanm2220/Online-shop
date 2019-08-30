@@ -9,7 +9,7 @@
     <span class="nav-link" style="cursor: pointer;" id="categories-tab" data-toggle="tab" data-target="#categories" role="tab" aria-controls="categories" aria-selected="false">Article categories</span>
   </li>
   <li class="nav-item w-25 text-center">
-    <span class="nav-link" style="cursor: pointer;" id="reports-tab" data-toggle="tab" data-target="#reports" role="tab" aria-controls="reports" aria-selected="false">Favourite articles</span>
+    <span class="nav-link" style="cursor: pointer;" id="reports-tab" data-toggle="tab" data-target="#reports" role="tab" aria-controls="reports" aria-selected="false">Reports</span>
   </li>
 </ul>
 <div class="tab-content" id="administratorTabsContent">
@@ -131,9 +131,67 @@
 	  </table>
     </div>
   </div>
-  <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab">
-  	  <div class="row d-flex justify-content-center mt-3">
-	  	  <h1>****** REPORTS ARE UNDER CONSTRUCTION ******</h1>
-	  </div>
+  <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab" data-ng-controller="reportController">
+ 	    <div class="row d-flex justify-content-center mt-3">
+	 	  	  <div class="form-row">
+		      <div class="col">
+		        <input type="date" class="form-control" placeholder="Start date" data-ng-model="startDate">
+		      </div>
+		      <div class="col">
+		        <input type="date" class="form-control" placeholder="End date" data-ng-model="endDate">
+		      </div>
+		      <div class="col">
+		        <button type="submit" class="btn btn-danger" data-ng-click="generateReport(startDate, endDate)"><i class="fa fa-file-text"></i> Generate report</button>
+		      </div>
+	      </div>
+	    </div>
+	    <div class="row my-3">
+	    	<h1>Income report</h1>
+	    </div>
+ 	  	<div class="row my-3" data-ng-if="incomeReports && incomeReports.length > 0">
+	    	<h4>Total Income: {{totalIncome | number : 2}} RSD</h4>
+	    </div>
+ 	  	<div class="row my-3 chart" id="incomeChart" data-ng-show="incomeReports && incomeReports.length > 0"></div>
+	    <div class="row d-flex justify-content-center my-2" data-ng-if="!incomeReports || incomeReports.length === 0">
+	  		<h3>There are no any order in choosen period to use for income calculcation.</h3>
+	 	</div>
+	    <div class="row my-3 ">
+	   		<h1>Canceled orders report</h1>
+	    </div>	   		
+ 	  	<div class="row my-3" data-ng-if="canceledOrdersReports && canceledOrdersReports.length > 0">
+	    	<h4>Total cancellations: {{totalCancellations}}</h4>
+	    </div>
+ 	  	<div class="row my-3 chart" id="canceledOrdersChart" data-ng-show="canceledOrdersReports && canceledOrdersReports.length > 0"></div>
+	    <div class="row d-flex justify-content-center my-2" data-ng-if="!canceledOrdersReports || canceledOrdersReports.length === 0">
+	  		<h3>There are no any canceled order in choosen period.</h3>
+	 	</div>
+	    <div class="row my-3">
+	   		<h1>Delivered orders list</h1>
+	    </div>
+	 	  	<div class="row d-flex justify-content-center my-2" data-ng-if="!deliveredOrders || deliveredOrders.length === 0">
+	  		<h3>There are no any delivered order in choosen period.</h3>
+	 	</div>
+	 	<div class="table-responsive" data-ng-if="deliveredOrders && deliveredOrders.length > 0">
+		  <table class="table table-striped bg-white">
+		    <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Date and time</th>
+				  <th scope="col">Customer</th>
+				  <th scope="col">Deliverer</th>
+			      <th scope="col">Total price</th>
+			    </tr>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="order in deliveredOrders">
+					<th scope="row">{{$index + 1}}</th>
+			        <td>{{order.timestamp | date:'dd.MM.yyyy HH:mm:ss'}}</td>
+			        <td>{{order.customer.username}}</td>
+			        <td>{{order.deliverer.username}}</td>
+			        <td>{{order.totalPrice | number : 2}} RSD</td>
+			    </tr>
+			</tbody>
+		  </table>
+	  	</div>
   </div> 
 </div>

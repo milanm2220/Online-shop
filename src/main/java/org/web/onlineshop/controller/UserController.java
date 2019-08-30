@@ -4,6 +4,8 @@ package org.web.onlineshop.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import org.web.onlineshop.dto.CustomerDto;
 import org.web.onlineshop.dto.RoleChangeDto;
 import org.web.onlineshop.dto.UserDto;
 import org.web.onlineshop.exceptions.CantChangeDelivererRoleException;
+import org.web.onlineshop.exceptions.UnauthorizedAccessException;
 import org.web.onlineshop.model.Administrator;
 import org.web.onlineshop.model.Cart;
 import org.web.onlineshop.model.Customer;
@@ -49,6 +52,9 @@ public class UserController
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private HttpServletRequest request;
 	
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserDto> getLoggedInUser()
@@ -97,6 +103,11 @@ public class UserController
 	@RequestMapping(value = "/non_admin", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UserDto>> getNonAdminUsers()
 	{
+		if (request.getSession().getAttribute("role") != UserRole.ADMINISTRATOR)
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		List<User> users = this.userService.getNonAdminUsers();
 		List<UserDto> userDtos = new ArrayList<>();
 		users.stream().forEach(user ->
@@ -110,6 +121,11 @@ public class UserController
 	@RequestMapping(value = "/non_admin", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> changeRole(@RequestBody RoleChangeDto roleChangeDto)
 	{
+		if (request.getSession().getAttribute("role") != UserRole.ADMINISTRATOR)
+		{
+			throw new UnauthorizedAccessException();
+		}
+		
 		if (roleChangeDto.getOldRole() == roleChangeDto.getNewRole())
 		{
 			return new ResponseEntity<>(HttpStatus.CONFLICT); 
