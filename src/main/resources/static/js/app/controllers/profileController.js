@@ -3,20 +3,7 @@
  */
 
 webShopApp.controller('profileController', function($scope, $window, $timeout, usersFactory, customersFactory, deliverersFactory, ordersFactory, articlesFactory, articleCategoriesFactory) 
-{
-	const displayFailureMessage = function(error)
-	{
-		$scope.failAlertMessage = error.data.message;
-		$scope.failAlertVisibility = true;
-		
-		$timeout(function ()
-		{
-			$scope.failAlertVisibility = false;
-		}, 3000);
-	}
-	
-	$scope.displayFailureMessage = displayFailureMessage;
-	
+{	
 	const getAdministratorData = function(id)
 	{
 		articleCategoriesFactory.getArticleCategories().then(function(data)
@@ -25,7 +12,7 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 		
 		deliverersFactory.getDeliverers().then(function(data)
@@ -34,7 +21,7 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 		
 		usersFactory.getNonAdminUsers().then(function(data)
@@ -47,7 +34,7 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 		
 		$scope.userRoles = [
@@ -75,7 +62,7 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 		
 		customersFactory.getFavouriteArticles($scope.user.id).then(function(data)
@@ -84,7 +71,7 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -97,7 +84,7 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 		
 		deliverersFactory.getOrders(id).then(function(data)
@@ -107,7 +94,7 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 
 		deliverersFactory.getOrderInProgress(id).then(function(data)
@@ -116,7 +103,7 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -139,7 +126,7 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 	})
 	.catch(function(error) 
 	{
-		displayFailureMessage(error);
+		displayFailureMessage($scope, $timeout, error.data.message);
 	});
 	
 	
@@ -159,7 +146,7 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -170,17 +157,11 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 			getDelivererData($scope.user.id);
 			$('#takeOrderModal').modal('hide');
 			
-			$scope.successAlertMessage = 'You have taken order successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'You have taken order successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -190,17 +171,11 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		{
 			getDelivererData($scope.user.id);
 			
-			$scope.successAlertMessage = 'Order is delivered successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Order is delivered successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -210,17 +185,11 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		{
 			getDelivererData($scope.user.id);
 			
-			$scope.successAlertMessage = 'Order is canceled successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Order is canceled successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -244,17 +213,12 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 			getAdministratorData($scope.user.id);
 			
 			$('#articleCategoryModal').modal('hide');
-			$scope.successAlertMessage = 'Article category \'' + data.data.name + '\' is added successfully.';
-			$scope.successAlertVisibility = true;
 			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Article category \'' + data.data.name + '\' is added successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -282,17 +246,11 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 			getAdministratorData($scope.user.id);
 			
 			$('#articleCategoryModal').modal('hide');
-			$scope.successAlertMessage = 'Article category \'' + data.data.name + '\' is updated successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Article category \'' + data.data.name + '\' is updated successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -326,23 +284,17 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 				{
 					getAdministratorData($scope.user.id);
 					
-					$scope.successAlertMessage = 'Article category \'' + category.name + '\' is removed successfully.';
-					$scope.successAlertVisibility = true;
-					
-					$timeout(function ()
-					{
-						$scope.successAlertVisibility = false;
-					}, 3000);
+					displaySuccessMessage($scope, $timeout, 'Article category \'' + category.name + '\' is removed successfully.');
 				})
 				.catch(function(error) 
 				{
-					displayFailureMessage(error);
+					displayFailureMessage($scope, $timeout, error.data.message);
 				});
 			}	
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -360,17 +312,12 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 			getAdministratorData($scope.user.id);
 			
 			$('#delivererModal').modal('hide');
-			$scope.successAlertMessage = 'Deliverer \'' + data.data.username + '\' is added successfully.';
-			$scope.successAlertVisibility = true;
 			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Deliverer \'' + data.data.username + '\' is added successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -402,17 +349,11 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 			getAdministratorData($scope.user.id);
 			
 			$('#delivererEditModal').modal('hide');
-			$scope.successAlertMessage = 'Deliverer \'' + data.data.username + '\' is updated successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Deliverer \'' + data.data.username + '\' is updated successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -422,17 +363,11 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		{
 			getAdministratorData($scope.user.id);
 			
-			$scope.successAlertMessage = 'Deliverer \'' + deliverer.username + '\' is removed successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Deliverer \'' + deliverer.username + '\' is removed successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -444,17 +379,11 @@ webShopApp.controller('profileController', function($scope, $window, $timeout, u
 		{
 			getAdministratorData($scope.user.id);
 			
-			$scope.successAlertMessage = 'Role of the user \'' + user.username + '\' is changed successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Role of the user \'' + user.username + '\' is changed successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 });

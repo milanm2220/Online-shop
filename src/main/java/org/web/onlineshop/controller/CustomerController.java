@@ -27,6 +27,7 @@ import org.web.onlineshop.model.Article;
 import org.web.onlineshop.model.Cart;
 import org.web.onlineshop.model.Customer;
 import org.web.onlineshop.model.Item;
+import org.web.onlineshop.service.ArticleService;
 import org.web.onlineshop.service.CartService;
 import org.web.onlineshop.service.CustomerService;
 import org.web.onlineshop.util.Constants;
@@ -39,6 +40,9 @@ public class CustomerController
 {
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired
+	private ArticleService articleService;
 	
 	@Autowired
 	private CartService cartService;
@@ -95,9 +99,9 @@ public class CustomerController
 		try
 		{
 			Customer customer = this.customerService.findById(id);
-			Article article = modelMapper.map(articleDto, Article.class);
-			customer.getFavoriteArticles().add(article);
-			this.customerService.update(customer);
+			Article article = this.articleService.findById(articleDto.getId());
+			article.getCustomers().add(customer);
+			this.articleService.update(article);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		catch(Exception exception) { throw exception; }
@@ -114,9 +118,9 @@ public class CustomerController
 		try
 		{
 			Customer customer = this.customerService.findById(id);
-			Article article = modelMapper.map(articleDto, Article.class);
-			customer.getFavoriteArticles().remove(article);
-			this.customerService.update(customer);
+			Article article = this.articleService.findById(articleDto.getId());
+			article.getCustomers().remove(customer);
+			this.articleService.update(article);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		catch(Exception exception) { throw exception; }

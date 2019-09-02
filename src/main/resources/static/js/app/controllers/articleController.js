@@ -3,18 +3,7 @@
  */
 
 webShopApp.controller('articleController', function ($scope, $timeout, $window, articlesFactory, customersFactory, articleCategoriesFactory) 
-{  
-	const displayFailureMessage = function(error)
-	{
-		$scope.failAlertMessage = error.data.message;
-		$scope.failAlertVisibility = true;
-		
-		$timeout(function ()
-		{
-			$scope.failAlertVisibility = false;
-		}, 3000);
-	}
-	
+{  	
 	$scope.role = $window.localStorage.getItem(ROLE_KEY);	
 	
 	$scope.$watch(function()
@@ -37,7 +26,7 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 			})
 			.catch(function(error) 
 			{
-				displayFailureMessage(error);
+				displayFailureMessage($scope, $timeout, error.data.message);;
 			});
 		}
 	}
@@ -69,7 +58,7 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 	})
 	.catch(function(error) 
 	{
-		displayFailureMessage(error);
+		displayFailureMessage($scope, $timeout, error.data.message);;
 	});
 	
 	const getUnsortedArticles = function()
@@ -80,7 +69,7 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);;
 		});
 	}
 	
@@ -96,7 +85,7 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 			})
 			.catch(function(error) 
 			{
-				displayFailureMessage(error);
+				displayFailureMessage($scope, $timeout, error.data.message);;
 			});
 		}
 		else
@@ -115,7 +104,7 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 			})
 			.catch(function(error) 
 			{
-				displayFailureMessage(error);
+				displayFailureMessage($scope, $timeout, error.data.message);;
 			});
 		}
 		else
@@ -132,7 +121,7 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);;
 		});
 	}
 	
@@ -146,7 +135,7 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 			})
 			.catch(function(error) 
 			{
-				displayFailureMessage(error);
+				displayFailureMessage($scope, $timeout, error.data.message);;
 			});
 		}
 		else
@@ -164,17 +153,11 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 			customersFactory.removeArticleFromFavourites(article, $window.localStorage.getItem(ID_KEY)).then(function(data) 
 			{
 				$scope.favouriteArticles.splice(indexInFavourites, 1);
-				$scope.successAlertMessage = 'Article \'' + article.name + '\' is removed from favourites.';
-				$scope.successAlertVisibility = true;
-				
-				$timeout(function ()
-				{
-					$scope.successAlertVisibility = false;
-				}, 3000);
+				displaySuccessMessage($scope, $timeout, 'Article \'' + article.name + '\' is removed from favourites.');
 			})
 			.catch(function(error) 
 			{
-				displayFailureMessage(error);
+				displayFailureMessage($scope, $timeout, error.data.message);;
 			});
 		}
 		else
@@ -182,17 +165,11 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 			customersFactory.addArticleToFavourites(article, $window.localStorage.getItem(ID_KEY)).then(function(data) 
 			{
 				$scope.favouriteArticles.push(article);
-				$scope.successAlertMessage = 'Article \'' + article.name + '\' is added in favourites.';
-				$scope.successAlertVisibility = true;
-				
-				$timeout(function ()
-				{
-					$scope.successAlertVisibility = false;
-				}, 3000);
+				displaySuccessMessage($scope, $timeout, 'Article \'' + article.name + '\' is added in favourites.');
 			})
 			.catch(function(error) 
 			{
-				displayFailureMessage(error);
+				displayFailureMessage($scope, $timeout, error.data.message);;
 			});
 		}
 	}
@@ -251,17 +228,11 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 			$scope.articles.push(data.data);
 
 			$('#articleModal').modal('hide');
-			$scope.successAlertMessage = 'Article \'' + data.data.name + '\' is added successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Article \'' + data.data.name + '\' is added successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);;
 		});
 	}
 	
@@ -308,17 +279,11 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 			$scope.articles.splice($scope.articleEditIndex, 1, data.data);
 
 			$('#articleModal').modal('hide');
-			$scope.successAlertMessage = 'Article \'' + data.data.name + '\' is updated successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Article \'' + data.data.name + '\' is updated successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);;
 		});
 	}
 	
@@ -333,17 +298,11 @@ webShopApp.controller('articleController', function ($scope, $timeout, $window, 
 		{
 			$scope.articles.splice(index, 1);
 			$scope.articleEditIndex
-			$scope.successAlertMessage = 'Article \'' + article.name + '\' is removed successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Article \'' + article.name + '\' is removed successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);;
 		});
 	}
 });

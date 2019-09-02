@@ -59,8 +59,8 @@ public class Article
 	
 	@ManyToMany
     @JoinTable(name = "favorite_articles",
-            joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id"))
 	@EqualsAndHashCode.Exclude
 	private Set<Customer> customers = new HashSet<>();
 	

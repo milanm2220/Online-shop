@@ -22,11 +22,13 @@ import org.web.onlineshop.dto.UserDto;
 import org.web.onlineshop.exceptions.CantChangeDelivererRoleException;
 import org.web.onlineshop.exceptions.UnauthorizedAccessException;
 import org.web.onlineshop.model.Administrator;
+import org.web.onlineshop.model.Article;
 import org.web.onlineshop.model.Cart;
 import org.web.onlineshop.model.Customer;
 import org.web.onlineshop.model.Deliverer;
 import org.web.onlineshop.model.User;
 import org.web.onlineshop.service.AdministratorService;
+import org.web.onlineshop.service.ArticleService;
 import org.web.onlineshop.service.CustomerService;
 import org.web.onlineshop.service.DelivererService;
 import org.web.onlineshop.service.UserService;
@@ -49,6 +51,9 @@ public class UserController
 	
 	@Autowired
 	private AdministratorService administratorService;
+	
+	@Autowired
+	private ArticleService articleService;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -176,6 +181,12 @@ public class UserController
 			
 			if (roleChangeDto.getOldRole() == UserRole.CUSTOMER)
 			{
+				List<Article> articles = new ArrayList<>(((Customer)user).getFavoriteArticles());
+				for (Article article : articles) 
+				{
+					article.getCustomers().remove((Customer)user);
+					this.articleService.update(article);	
+				}
 				this.customerService.delete(roleChangeDto.getId());
 			}
 			else if (roleChangeDto.getOldRole() == UserRole.DELIVERER)

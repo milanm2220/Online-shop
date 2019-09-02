@@ -1,11 +1,11 @@
-<div class="alert alert-success autoCloseAlert" data-ng-if="successAlertVisibility == true">
+<div class="alert alert-success alert-dismissible fixed-top autoCloseAlert" role="alert" data-ng-if="successAlertVisibility">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <strong>Success! </strong>
+    <h4 class="alert-heading">Success!</h4>
     <p>{{successAlertMessage}}</p>
 </div>
 
-<div class="alert alert-danger autoCloseAlert" data-ng-if="failAlertVisibility == true">
+<div class="alert alert-danger alert-dismissible fixed-top autoCloseAlert" role="alert" data-ng-if="failAlertVisibility">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <strong>Fail! </strong>
+    <h4 class="alert-heading">Error!</h4>
     <p>{{failAlertMessage}}</p>
 </div>

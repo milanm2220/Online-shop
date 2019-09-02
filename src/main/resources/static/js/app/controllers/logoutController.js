@@ -15,24 +15,12 @@ webShopApp.controller('logoutController', function ($scope, $location, $timeout,
 		    $scope.loggedInUserInfo.role = undefined;
 		    
 			$location.path('/');
-			
-			$scope.successAlertMessage = 'You are logged out successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+		
+			displaySuccessMessage($scope, $timeout, 'You are logged out successfully.');
 		})
 		.catch(function(error) 
 		{
-			$scope.failAlertMessage = error.data.message;
-			$scope.failAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.failAlertVisibility = false;
-			}, 3000);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	};
 });

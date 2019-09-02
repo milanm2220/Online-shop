@@ -23,6 +23,11 @@ public class ArticleService
 		return this.articleRepository.findAll();
 	}
 	
+	public Article findById(Long id)
+	{
+		return this.articleRepository.findById(id).get();
+	}
+	
 	public List<Article> findAllOnDiscount()
 	{
 		return this.articleRepository.findByDiscountNotNullAndDiscountGreaterThan(0);

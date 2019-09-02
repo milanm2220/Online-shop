@@ -4,17 +4,6 @@
 
 webShopApp.controller('orderController', function ($scope, $timeout, $window, customersFactory, ordersFactory) 
 {  
-	const displayFailureMessage = function(error)
-	{
-		$scope.failAlertMessage = error.data.message;
-		$scope.failAlertVisibility = true;
-		
-		$timeout(function ()
-		{
-			$scope.failAlertVisibility = false;
-		}, 3000);
-	}
-	
 	$scope.totalPrice = 0;
 	
 	$scope.$watch(function()
@@ -23,20 +12,24 @@ webShopApp.controller('orderController', function ($scope, $timeout, $window, cu
 	},
 	function(newCodes, oldCodes)
 	{
+		getBonusPoints();
 		getCart();
 	});
 	
-	if ($window.localStorage.getItem(ID_KEY) && $window.localStorage.getItem(ROLE_KEY) && $window.localStorage.getItem(ROLE_KEY) == 'CUSTOMER')
+	const getBonusPoints = function()
 	{
-		customersFactory.getBonusPoints($window.localStorage.getItem(ID_KEY)).then(function(data)
+		if ($window.localStorage.getItem(ROLE_KEY) == 'CUSTOMER')
 		{
-			$scope.bonusPoints = data.data;
-			$scope.bonusPointsPlusOne = parseInt($scope.bonusPoints, 10) + 1;
-		})
-		.catch(function(error) 
-		{
-			displayFailureMessage(error);
-		});
+			customersFactory.getBonusPoints($window.localStorage.getItem(ID_KEY)).then(function(data)
+			{
+				$scope.bonusPoints = data.data;
+				$scope.bonusPointsPlusOne = parseInt($scope.bonusPoints, 10) + 1;
+			})
+			.catch(function(error) 
+			{
+				displayFailureMessage($scope, $timeout, error.data.message);
+			});
+		}		
 	}
 	
 	const getCart = function()
@@ -69,12 +62,12 @@ webShopApp.controller('orderController', function ($scope, $timeout, $window, cu
 			})
 			.catch(function(error) 
 			{
-				displayFailureMessage(error);
+				displayFailureMessage($scope, $timeout, error.data.message);
 			});
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -95,21 +88,15 @@ webShopApp.controller('orderController', function ($scope, $timeout, $window, cu
 		customersFactory.addItemToCart($scope.itemToPutInCart, $window.localStorage.getItem(ID_KEY)).then(function(data) 
 		{
 			const discount = $scope.itemToPutInCart.article.discount;
-			const price = (discount && discount > 0) ? $scope.itemToPutInCart.article.price * (100 - discount) / 100 : $scope.itemToPutInCart.article.price;
+			const price = (discount) ? $scope.itemToPutInCart.article.price * (100 - discount) / 100 : $scope.itemToPutInCart.article.price;
 			data.data.discountPrice = price;
 			$scope.items.push(data.data);
 			$scope.totalPrice += price * $scope.itemToPutInCart.amount;
-			$scope.successAlertMessage = 'Article \'' + $scope.itemToPutInCart.article.name + '\' is added to the cart.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Article \'' + $scope.itemToPutInCart.article.name + '\' is added to the cart.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -120,20 +107,14 @@ webShopApp.controller('orderController', function ($scope, $timeout, $window, cu
 		{
 			$scope.items.splice(index, 1);
 			const discount = itemToDrop.article.discount;
-			const price = (discount && discount > 0) ? itemToDrop.article.price * (100 - discount) / 100 : itemToDrop.article.price;
-			$scope.totalPrice -= itemToDrop.article.price * itemToDrop.amount;
+			const price = (discount) ? itemToDrop.article.price * (100 - discount) / 100 : itemToDrop.article.price;
+			$scope.totalPrice -= price * itemToDrop.amount;
 			
-			$scope.successAlertMessage = 'Article \'' + itemToDrop.article.name + '\' is dropped from the cart.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Article \'' + $scope.itemToPutInCart.article.name + '\' is dropped from the cart.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 	
@@ -150,17 +131,11 @@ webShopApp.controller('orderController', function ($scope, $timeout, $window, cu
 			$('#orderModal').modal('hide');
 			$scope.pointsToUseValue = 0;
 			
-			$scope.successAlertMessage = 'Order is completed successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'Order is completed successfully.');
 		})
 		.catch(function(error) 
 		{
-			displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	};
 });

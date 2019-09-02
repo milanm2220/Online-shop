@@ -51,6 +51,10 @@
 			 			data-ng-change="pointsChanged(pointsToUse)"
 			 			data-ng-init="pointsToUse = 0;"
 			 			data-ng-options="n for n in [] | range:0:((bonusPoints > 10) ? 10 : bonusPointsPlusOne)"></select>
+	 			<p class="text-muted mt-3" data-ng-if="bonusPoints > 0">
+	 				* Each bonus point is worth <b>2%</b> discount. <br>
+	 				* You can redeem maximum <b>10</b> bonus points per order.
+	 			</p>
 			</div>
        		<button type="submit" class="btn btn-warning col-3 pull-right mr-2" data-ng-click="order()"><span class="fa fa-check" style="color: black; font-size: 130%;"></span> Send my order!</button>
         </div>

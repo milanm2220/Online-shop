@@ -17,23 +17,11 @@ webShopApp.controller('registrationController', function ($scope, $location, $ti
 			$('#registrationModal').modal('hide');
 			$location.path('/');
 			
-			$scope.successAlertMessage = 'You are signed up successfully.';
-			$scope.successAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.successAlertVisibility = false;
-			}, 3000);
+			displaySuccessMessage($scope, $timeout, 'You are signed up successfully.');
 		})
 		.catch(function(error) 
 		{
-			$scope.failAlertMessage = error.data.message;
-			$scope.failAlertVisibility = true;
-			
-			$timeout(function ()
-			{
-				$scope.failAlertVisibility = false;
-			}, 3000);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	};
 });

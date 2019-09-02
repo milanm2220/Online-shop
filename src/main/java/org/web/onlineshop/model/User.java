@@ -14,8 +14,10 @@ import org.hibernate.validator.constraints.Length;
 import org.web.onlineshop.util.UserRole;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode
 @MappedSuperclass
 public class User implements Serializable 
 {

@@ -75,7 +75,7 @@ webShopApp.controller('reportController', function($scope, $window, $timeout, or
 			error = {};
 			error.data = {};
 			error.data.message = 'You must choose both start and end date!';
-			$scope.displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 			return;
 		}
 		
@@ -98,7 +98,7 @@ webShopApp.controller('reportController', function($scope, $window, $timeout, or
 		})
 		.catch(function(error) 
 		{
-			$scope.displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 		
 		ordersFactory.getNumberOfCanceledOrdersInPeriod(startDate, endDate).then(function(data)
@@ -116,7 +116,7 @@ webShopApp.controller('reportController', function($scope, $window, $timeout, or
 		})
 		.catch(function(error) 
 		{
-			$scope.displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 		
 		ordersFactory.getDeliveredOrdersInPeriod(startDate, endDate).then(function(data)
@@ -126,7 +126,7 @@ webShopApp.controller('reportController', function($scope, $window, $timeout, or
 		})
 		.catch(function(error) 
 		{
-			$scope.displayFailureMessage(error);
+			displayFailureMessage($scope, $timeout, error.data.message);
 		});
 	}
 });

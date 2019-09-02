@@ -51,3 +51,25 @@ webShopApp.filter('enumFilter', function()
 	    return (x.charAt(0).toUpperCase() + x.slice(1).toLowerCase()).replace(/_/g, ' ');
 	};
 });
+
+const displaySuccessMessage = function($scope, $timeout, message)
+{
+	$scope.successAlertMessage = message;
+	$scope.successAlertVisibility = true;
+	
+	$timeout(function ()
+	{
+		$scope.successAlertVisibility = false;
+	}, 3000);
+}
+
+const displayFailureMessage = function($scope, $timeout, message)
+{
+	$scope.failAlertMessage = message;
+	$scope.failAlertVisibility = true;
+	
+	$timeout(function ()
+	{
+		$scope.failAlertVisibility = false;
+	}, 3000);
+}
